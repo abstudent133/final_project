@@ -12,6 +12,8 @@
     #password
         #ask for the password
         #take the password, hash it
+
+#Sprite classes
     
 
 
