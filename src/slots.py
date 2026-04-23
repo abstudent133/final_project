@@ -27,5 +27,9 @@
     # Add bet x multiplier to the player money amount
 
 # Menu Function
-    #
-    
+    # Get user bet 
+    # Spin Grid Function
+    # Get Payout Function
+    # Ask user if they want to play again
+
+# Menu Function
