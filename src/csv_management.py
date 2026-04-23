@@ -9,5 +9,15 @@
 
 # load csv:
     # create dataframe
-    # loops over rows in the csv and add them to a dictionary
+    # loops over rows in the csv and add them to a dictionary, saving by username
     # return the dictionary
+
+# DICTIONARY STRUCTURE:
+    # users = {
+    # username = {
+        # password = password
+        # money = money
+        # avatar_base = avatar_base
+        # inventory = {item : equipped, item_2 : unequipped}
+    #}
+#}
