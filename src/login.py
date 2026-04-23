@@ -4,6 +4,14 @@
 
 #login function
 #parameters: user dictionary
+    #search dictionary function
+    #parameters: dictionary, searching
+        #for key in dictionary
+            #if seaching == key:
+                #return true
+            #else:
+                #continue
+    #return false
     #while true
         #show a welcome message and explain the login
         #ask if they want create a new user or login or exit
