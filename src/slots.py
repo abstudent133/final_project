@@ -8,13 +8,13 @@
 # Symbol Multiplier Function
     # If symbol == C
         # Multiplier = 3
-    # If symbol == C
+    # If symbol == W
         # Multiplier = 4
-    # If symbol == C
+    # If symbol == L
         # Multiplier = 5
-    # If symbol == C
+    # If symbol == A
         # Multiplier = 10
-    # If symbol == C
+    # If symbol == S
         # Multiplier = 20
 
 # Spin Grid Function
