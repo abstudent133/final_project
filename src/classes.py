@@ -1,5 +1,6 @@
 #Pseudocode
-#import random
+from helper import*
+
 
 #User class
 class User():
@@ -10,9 +11,9 @@ class User():
     def formate_dict(self):
         #take username, hashed password, starting amount of money, and an empty invintory and create a dictionary
         #return it
+        #avatar base is a sprite that we will input
         avatar_base = None
-        user = {"username": self.username,
-                "password": self.password(),
+        user = {"password": self.password(),
                 "money": 100,
                 "avatar base": avatar_base,
                 "inventory": {}                
@@ -20,9 +21,11 @@ class User():
     #password
     def password(self):
         #ask for the password
+        pw = input("Please create a password and input it here: ")
         #take the password, hash it
-        pass
-
+        hash_value = hash_pass(pw)
+        return hash_value
+    
     
 
 

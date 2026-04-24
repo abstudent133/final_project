@@ -1,9 +1,19 @@
 #import all the things
+from blackjack import*
+from gift_shop import*
+from login import*
+from poker import*
+from slots import*
+from view_profile import*
+from work import*
 
 #main function
+def main():
 #parameters: none
     #while true
+    while True:
         #call login function
+        pass
         #if it returns quit
             #show a message about leaving
             #break
