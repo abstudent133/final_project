@@ -1,6 +1,6 @@
 # MH 1st view profile functions
 import pygame
-
+import sys
 # display avatar:
 def display_avatar(user, window):
     # load avatar base
@@ -13,20 +13,17 @@ def display_avatar(user, window):
     window.blit(equipped_item, (100, 100))
 
 # display inventory:
-def display(user):
+def display(user, hats):
     window = pygame.display.set_mode((800, 600))
-    count = 0
-    x = 100
-    y = 100
-    # displays all items in their inventory as buttons
-    for item in user["inventory"]:
-            item_button = pygame.image.load(user["inventory"][item]).convert_alpha()
-            window.blit(item_button, (x, y))
-
-        # if the user selects an unequipped item, ask them if they want to equip it
-        # if they do, put it on their avatar sprite and unequip any item already there
+    # displays all hats as buttons
+    # if a hat is not owned by the user put the lock sprite over it
+    # if they select a hat they own equip it
+    # if they select a hat they don't own ask them if they want to go to the shop
+    # if they do run the shop function
 
 # display info:
+def display_info(user):
+    pass
     # displays user name
     # displays users money
 
