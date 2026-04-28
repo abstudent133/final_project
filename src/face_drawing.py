@@ -1,38 +1,13 @@
-#import all the things
-
-#main function
-#parameters: none
-    #while true
-        #call login function
-        #if it returns quit
-            #show a message about leaving
-            #break
-        #else:
-            #while true
-                #choice is them choosing a button of the action they want to complete
-                #if they choose user stuff(to be decided)
-                #else if they choose poker
-                    #run poker game
-                #else if they choose blackjack
-                    #run blackjack
-                #else if they choose slots
-                    #run slots
-                #else if they choose exit
-                    #message
-                    #break
-
-import random as r
 import pygame
+import json
+
+
 pygame.init()
 
 def draw_face():
 
     screen = pygame.display.set_mode((1320, 960))
     clock = pygame.time.Clock()
-    font = pygame.font.SysFont('Arial', 12)
-    button_img = pygame.image.load("docs/minion_2.jpg").convert_alpha()
-    button_rect = button_img.get_rect()
-    # screen.blit(button_img, button_rect)
 
     drawing = False
     radius = 3
@@ -48,22 +23,38 @@ def draw_face():
         for stroke in strokes:
             draw_line(surface, "white", stroke, radius)
 
+    def save_strokes(strokes, filename="docs/face.json"):
+        with open(filename, "w") as f:
+            json.dump(strokes, f)
+
+    def load_strokes(filename="docs/face.json"):
+        try:
+            with open(filename, "r") as f:
+                data = json.load(f)
+                return [[tuple(point) for point in stroke] for stroke in data]
+        except FileNotFoundError:
+            print("No saved file found.")
+            return []
 
     running = True
     while running:
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 running = False
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_z and pygame.KMOD_LCTRL:
+            elif event.type == pygame.KEYDOWN:
+                mods = pygame.key.get_mods()
+
+                if event.key == pygame.K_z and mods & pygame.KMOD_CTRL:
                     if strokes:
                         strokes.pop()
-                        redraw(screen)
-            
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s and pygame.KMOD_LSHIFT:
-                    pygame.image.save(screen, "docs/face.jpg")
+
+                elif event.key == pygame.K_s and mods & pygame.KMOD_CTRL:
+                    save_strokes(strokes)
+
+                elif event.key == pygame.K_l and mods & pygame.KMOD_CTRL:
+                    strokes = load_strokes()
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 drawing = True
