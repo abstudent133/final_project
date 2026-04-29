@@ -1,11 +1,11 @@
 #import all the things
-from blackjack import*
-from gift_shop import*
-from login import*
-from poker import*
-from slots import*
-from view_profile import*
-from work import*
+from blackjack import *
+from gift_shop import *
+from login import *
+from poker import *
+from slots import *
+from view_profile import *
+from work import *
 
 #main function
 def main():
