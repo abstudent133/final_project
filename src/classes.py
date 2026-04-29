@@ -1,9 +1,10 @@
 #Pseudocode
 from helper import*
+import pygame
 
 
 #User class
-class User():
+class User:
     #initiate(username, password)
     def __init__(self, username):
         self.username = username
@@ -18,6 +19,15 @@ class User():
                 "avatar base": avatar_base,
                 "inventory": {}                
 }
+    #avatar choice
+    def avatar(self):
+        #show all the availible avatars
+        pygame.init()
+        screen = pygame.display.set_mode((800,600))
+        
+
+        #as user to choose
+        #return that choice
     #password
     def password(self):
         #ask for the password
@@ -26,6 +36,68 @@ class User():
         hash_value = hash_pass(pw)
         return hash_value
     
+#this is a button class to create a button in pygame
+class Button:
+    #You have to input what you want the button to say, the x and y coordinates of it's position, the width and heigth of the button, the color of the button(must be RGB style), and the color of the button when the mouse is hovering over it
+    def __init__(self, x, y, width, height, color, hover_color, text="button"):
+        self.text = text
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color = color
+        self.hover_color = hover_color
+        self.font = pygame.font.SysFont("Arial", 30)
+    #this is the methode that actually creates the button
+    #the screen parameter is just the screen variable used when creating the screen
+    def draw(self, screen):
+        # Hover effect: Change color if mouse is over button
+        mouse_pos = pygame.mouse.get_pos()
+        current_color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.color
+        
+        pygame.draw.rect(screen, current_color, self.rect)
+        
+        # Render and center text
+        text_surf = self.font.render(self.text, True, (255, 255, 255))
+        text_rect = text_surf.get_rect(center=self.rect.center)
+        screen.blit(text_surf, text_rect)
+    #This is the method that tells you if the button has been clicked
+    def is_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.rect.collidepoint(event.pos):
+                return True
+        return False
+
+#this is a class for a image button  
+class ImageButton:
+    #You must input the x and y coordinates for the button, the image path, and the scale
+    def __init__(self, x, y, image_path, scale=1):
+        # Load and scale the image
+        img = pygame.image.load(image_path).convert_alpha()
+        width, height = img.get_size()
+        self.image = pygame.transform.scale(img, (int(width * scale), int(height * scale)))
+        
+        # Create a rect for positioning and collision detection
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.clicked = False
+#again this is what creates the button and it returns if it has been pressed or not
+    def draw(self, screen):
+        action = False
+        # Get mouse position
+        pos = pygame.mouse.get_pos()
+
+        # Check for hover and click conditions
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
+                self.clicked = True
+                action = True
+
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+
+        # Draw button on screen
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        return action
+    
+
     
 
 
