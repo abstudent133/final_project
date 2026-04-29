@@ -4,6 +4,8 @@ from classes import *
 #import helper
 from helper import *
 
+import pygame
+
 #login function
 def login(users_dict):
 #parameters: user dictionary
@@ -22,9 +24,15 @@ def login(users_dict):
                 continue
         #return false
         return False
-    
+    pygame.init()
+    screen = pygame.display.set_mode((1280, 720))
+    running = True
     #while true
     while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
         #show a welcome message and explain the login
         print("This is the login for the DINO CASINO!")
         #ask if they want create a new user or login or exit
