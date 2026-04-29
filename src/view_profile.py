@@ -1,6 +1,7 @@
 # MH 1st view profile functions
 import pygame
 import sys
+from csv_management import *
 # display avatar:
 def display_avatar(user, window):
     # load avatar base
@@ -13,7 +14,11 @@ def display_avatar(user, window):
     window.blit(equipped_item, (100, 100))
 
 # display inventory:
-def display(user, hats):
+def display(user):
+    hats = user["Inventory"]
+    x = 100
+    y = 100
+    count = 1
     window = pygame.display.set_mode((800, 600))
     # displays all hats as buttons
     # if a hat is not owned by the user put the lock sprite over it
