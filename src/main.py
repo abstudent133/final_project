@@ -13,23 +13,47 @@ def main():
     #while true
     while True:
         #call login function
-        pass
+        move_on = login()
         #if it returns quit
+        if move_on == "quit":
             #show a message about leaving
+            print("Thanks for using Dino Casino!")
             #break
+            break
         #else:
+        else:
             #while true
+            while True:
                 #choice is them choosing a button of the action they want to complete
+                print("""Welcom to Dino Casino! Please choose an action to complete:
+                      1. Shop
+                      2. Poker
+                      3. Blackjack
+                      4. Slots
+                      5. Work
+                      6. Exit""")
+                choice = input("Please input the number of the action you would like to complete: ")
                 #if they choose edit profile(shop)
+                if choice == "1":
                     #call shop function
+                    pass
                 #else if they choose poker
+                elif choice == "2":
                     #run poker game
+                    pass
                 #else if they choose blackjack
+                elif choice == "3":
                     #run blackjack
+                    pass
                 #else if they choose slots
+                elif choice == "4":
                     #run slots
+                    pass
                 #else if they choose to work
+                elif choice == "5":
                     #call work function
+                    pass
                 #else if they choose exit
-                    #message
+                elif choice == "6":
                     #break
+                    break
