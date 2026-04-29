@@ -97,6 +97,24 @@ class ImageButton:
         screen.blit(self.image, (self.rect.x, self.rect.y))
         return action
     
+#message class
+class Message:
+    #initiates all the parameters which are the text, the x and y coordinates, the font(not necesary), the size(not necesary), and the color(not necesary)
+    def __init__(self, text,x,y,font="Ariel",size=30,color=(0,0,0)):
+        self.txt = text
+        self.font = font
+        self.size = size
+        self.color = color
+        self.x = x
+        self.y = y
+
+    def draw(self, screen):
+        font = pygame.font.SysFont(self.font,self.size)
+        text_surface = font.render(self.txt,True,self.color)
+        screen.blit(text_surface,(self.x,self.y))
+    
+    
+
 
     
 
