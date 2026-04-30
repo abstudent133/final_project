@@ -6,6 +6,22 @@ from poker import *
 from slots import *
 from view_profile import *
 from work import *
+from classes import *
+
+pygame.init()
+
+screen_x = 1320
+screen_y = 960
+font = pygame.font.SysFont("Arial", 12)
+screen = pygame.display.set_mode((screen_x, screen_y))
+clock = pygame.time.Clock()
+
+running = True
+
+shop_button = ImageButton()
+
+while running:
+    pass
 
 #main function
 def main():
