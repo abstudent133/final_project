@@ -36,3 +36,8 @@ def display_info(user):
     # runs display avatar
     # runs display inventory
     # runs display info
+
+# load buttons
+def load_hats():
+    hats = load_df("docs/shop_items.csv")
+    # creates a button for every hat

@@ -119,7 +119,7 @@ customers = {
     },
 
     "Sir Onion-Eyes" : {
-        "name" : "",
+        "name" : "Sir Onion-Eyes",
         "question" : "",
         "responses" : [],
         "correct" : "",
@@ -128,7 +128,7 @@ customers = {
     },
      
     "Lord Spiff of West Chedda Town" : {
-        "name" : "",
+        "name" : "Lord Spiff of West Chedda Town",
         "question" : "",
         "responses" : [],
         "correct" : "",
@@ -137,7 +137,7 @@ customers = {
     },
 
     "Easton Gifford" : {
-        "name" : "",
+        "name" : "Easton Grifford",
         "question" : "",
         "responses" : [],
         "correct" : "",
@@ -146,7 +146,7 @@ customers = {
     },
 
     "Princess Tumbleweed" : {
-        "name" : "",
+        "name" : "Princess Tumbleweed",
         "question" : "",
         "responses" : [],
         "correct" : "",
@@ -155,16 +155,13 @@ customers = {
     },
 
     "Feezlegorp of X2N30-*9" :{
-        "name" : "",
+        "name" : "Feezlegorp of X2N30-*9",
         "question" : "",
         "responses" : [],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
     },
-
-    ""
-
 }
 
 customers_list_format = ["Susan McCombs", "Joshua Jermithan", "Freddie Skips", "Tania the Destroyer","Mr. Egg Senior", "Riswalda Hicks", "Ol' Moldy Bones", "That one guy who always buys choclate bars and them throws them at birds.", "Dave Smith", "Anthony Wobble-Legs"]
