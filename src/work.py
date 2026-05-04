@@ -121,7 +121,7 @@ customers = {
     "Sir Onion-Eyes" : {
         "name" : "Sir Onion-Eyes",
         "question" : "",
-        "responses" : [],
+        "responses" : [""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
@@ -129,8 +129,8 @@ customers = {
      
     "Lord Spiff of West Chedda Town" : {
         "name" : "Lord Spiff of West Chedda Town",
-        "question" : "",
-        "responses" : [],
+        "question" : "Hail and well met, could you direct me to the nearest Cheez-A-Ria?",
+        "responses" : [""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
@@ -138,8 +138,8 @@ customers = {
 
     "Easton Gifford" : {
         "name" : "Easton Grifford",
-        "question" : "",
-        "responses" : [],
+        "question" : "Do you have Mountain Dew here, specifically Baja Blast?",
+        "responses" : ["I'm not participating in your Mountain Dew scamming, get out.", ""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
