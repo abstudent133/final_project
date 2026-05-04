@@ -112,6 +112,51 @@ class Message:
         font = pygame.font.SysFont(self.font,self.size)
         text_surface = font.render(self.txt,True,self.color)
         screen.blit(text_surface,(self.x,self.y))
+
+#class for text inputs
+class TextInput:
+    def __init__(self, x, y, width, height, font_size=32):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color = pygame.Color('lightskyblue3')
+        self.active_color = pygame.Color('dodgerblue2')
+        self.passive_color = pygame.Color('lightskyblue3')
+        self.font = pygame.font.Font(None, font_size)
+        
+        self.text = ''
+        self.active = False
+
+    def handle_event(self, event):
+        txt = ''
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # If the user clicked on the input box, make it active
+            if self.rect.collidepoint(event.pos):
+                self.active = True
+            else:
+                self.active = False
+            self.color = self.active_color if self.active else self.passive_color
+
+        if event.type == pygame.KEYDOWN:
+            if self.active:
+                if event.key == pygame.K_RETURN:
+                    txt = self.text
+                    self.text = '' # Clear the text
+                    return txt
+                elif event.key == pygame.K_BACKSPACE:
+                    self.text = self.text[:-1]
+                else:
+                    self.text += event.unicode
+
+    def draw(self, screen):
+        # Render the current text
+        txt_surface = self.font.render(self.text, True, (255, 255, 255))
+        
+        # Resize the box if the text is too long
+        width = max(200, txt_surface.get_width() + 10)
+        self.rect.w = width
+        
+        # Draw the text and the box
+        screen.blit(txt_surface, (self.rect.x + 5, self.rect.y + 5))
+        pygame.draw.rect(screen, self.color, self.rect, 2)
     
     
 
