@@ -130,7 +130,7 @@ customers = {
     "Lord Spiff of West Chedda Town" : {
         "name" : "Lord Spiff of West Chedda Town",
         "question" : "Hail and well met, could you direct me to the nearest Cheez-A-Ria?",
-        "responses" : [""],
+        "responses" : ["Yes of course, it's just over the Spaghetti Mountains and past the ricotta dragon.", "Cheez-A-Ria? That sounds stupid.", ""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
