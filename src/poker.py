@@ -283,4 +283,3 @@ def play():
     winner=max(range(4),key=lambda i: chips[i])
     print(f"Game over! Player {winner+1} wins with {chips[winner]} chips.")
 
-play()

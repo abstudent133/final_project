@@ -41,7 +41,7 @@ def main():
             #while true
             while True:
                 #choice is them choosing a button of the action they want to complete
-                print("""Welcom to Dino Casino! Please choose an action to complete:
+                print("""Welcome to Dino Casino! Please choose an action to complete:
                       1. Shop
                       2. Poker
                       3. Blackjack
