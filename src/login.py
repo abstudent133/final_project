@@ -7,7 +7,7 @@ from helper import *
 import pygame
 
 #login function
-def login(users_dict):
+def login(users_dict, action, screen):
 #parameters: user dictionary
     #search dictionary function
     def search(user_dict, searching):
@@ -24,25 +24,21 @@ def login(users_dict):
                 continue
         #return false
         return False
-    pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
-    running = True
+    title = Message("This is the login for the DINO CASINO!",300,500)
+    username_input = Message(""""Please input your desired username here:
+                             (Note: You cannot choose 'forgot' as your username)""",300,500)
+    input_box_name = TextInput(300, 300, 140, 32)
+    input_box_pass = TextInput(300, 100, 140, 32)
     #while true
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
         #show a welcome message and explain the login
-        print("This is the login for the DINO CASINO!")
         #ask if they want create a new user or login or exit
-        choice = input("Would you like to |1. Login|2. Create an Account|3. Exit| Input your choice here: ")
         #escape = false
         escape = False
         #if they choose to create a new user
-        if choice == "2":
+        if action == "2":
             #ask for a username
-            name = input("Please input your desired username here(note: it cannot be forgot because then your account won't work): ")
+            name = input("Please input your desired username here(note: it cannot be 'forgot' because then your account won't work): ")
             #create a user with the user class
             user = User(name)
             #get the formated info and save it to the dictionary
@@ -50,7 +46,7 @@ def login(users_dict):
             #return good
             return "good"
         #else if they choose login
-        elif choice == "1":
+        elif action == "1":
             #while true:
             while True:
                 #show a message that if they forgot their username they can input forgot
@@ -87,13 +83,51 @@ def login(users_dict):
             return "good"
 
         #else if they choose to exit
-        elif choice == "3":
+        elif action == "3":
             #return quit
             return "quit"
         #if escape is true:
         if escape == True:
             #continue
             continue
-        
+
+#login interface
+def login_ui(user_dict):
+#parameters: none
+    #set up space
+    pygame.init()
+    screen = pygame.display.set_mode((1280, 720))
+    running = True
+    login_button = Button("Login",200,200,100,50,(250,0,0),(0,0,255))
+    sign_up_button = Button("Sign Up",400,200,100,50,(250,0,0),(0,0,255))
+    exit_button = Button("Exit",600,200,100,50,(250,0,0),(0,0,255))
+
+    #start loop
+    while running:
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+
+        #if login was clicked run login and with action being 1
+        if login_button.is_clicked(event):
+            login(user_dict, "1",screen)
+        #else if they choose to sign up run login with action being 2
+        if sign_up_button.is_clicked(event):
+            login(user_dict, "2",screen)
+        #else if they choose to exit run login with action being 3
+        if exit_button.is_clicked(event):
+            login(user_dict, "3",screen)
+
+        #draw all of the buttons
+        login_button.draw(screen)
+        sign_up_button.draw(screen)
+        exit_button.draw(screen)
+        #show it on the screen
+        pygame.display.flip()
+    
+    pygame.quit()
+
+
+            
 
 
