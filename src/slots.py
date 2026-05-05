@@ -37,14 +37,14 @@
 
 import pygame
 import random
-
+import time
 
 def spin_grid():
     symbols = ['c', 'w', 'l', 'a', 's']
     return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
 
 def symbol_multiplier(symbol):
-    return {'c':3, 'w':4, 'l':5, 'a':10, 's':20}.get(symbol, 0)
+    return {'c':1, 'w':2, 'l':5, 'a':10, 's':20}.get(symbol, 0)
 
 def get_payout(grid, bet):
     payout = 0
@@ -68,18 +68,17 @@ width, height = 1280, 1020
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("slot machine")
 
-font = pygame.font.SysFont(None, 60)
-small_font = pygame.font.SysFont(None, 30)
+font = pygame.font.Font(None, 30)
 
 
 bg = pygame.image.load("docs/background.png").convert()
 bg = pygame.transform.scale(bg, (width, height))
 
 
-cell_size = 90
-gap = 18
-grid_x = 165
-grid_y = 230
+cell_size = 80
+gap = 20
+grid_x = 190
+grid_y = 335
 
 
 symbols = ['c', 'w', 'l', 'a', 's']
@@ -95,7 +94,6 @@ money = 100
 grid = spin_grid()
 bet = 10
 min_bet = 1
-max_bet = money
 message = "press space to spin"
 
 
@@ -107,8 +105,8 @@ def draw():
         for c in range(3):
             symbol = grid[r][c]
 
-            x = grid_x + c * (cell_size + gap)
-            y = grid_y + r * (cell_size + gap)
+            x = (grid_x + c * (cell_size + gap)) * 2
+            y = (grid_y + r * (cell_size + gap))
 
             screen.blit(symbol_images[symbol], (x, y))
 
@@ -119,7 +117,7 @@ def draw():
     bet_text = font.render(f"bet: ${bet}", True, (255, 255, 255))
     screen.blit(bet_text, (10, 80))
 
-    msg_text = small_font.render(message, True, (255, 255, 255))
+    msg_text = font.render(message, True, (255, 255, 255))
     screen.blit(msg_text, (10, height - 40))
 
 
@@ -128,9 +126,13 @@ running = True
 clock = pygame.time.Clock()
 
 while running:
+    max_bet = money
     screen.fill((0, 0, 0))
     draw()
     pygame.display.flip()
+    time.sleep(0.5)
+    bg = pygame.image.load("docs/background.png").convert()
+    bg = pygame.transform.scale(bg, (width, height))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -143,6 +145,14 @@ while running:
             if event.key == pygame.K_UP:
                 if bet < max_bet and bet < money:
                     bet += 1
+            
+            if event.key == pygame.K_RIGHT:
+                if bet < max_bet and bet < money:
+                    bet += 10
+
+            if event.key == pygame.K_LEFT:
+                if bet > min_bet:
+                    bet -= 10
 
             if event.key == pygame.K_DOWN:
                 if bet > min_bet:
@@ -151,6 +161,8 @@ while running:
 
             if event.key == pygame.K_SPACE:
                 if money >= bet and bet > 0:
+                    bg = pygame.image.load("docs/background(2).png").convert()
+                    bg = pygame.transform.scale(bg, (width, height))
                     money -= bet
                     grid = spin_grid()
                     payout = get_payout(grid, bet)
