@@ -123,7 +123,7 @@ def login(screen, users_dict, action):
 
             #else if they choose to exit
             elif action == "3":
-
+                running = False
                 #return quit
                 return "quit"
 
