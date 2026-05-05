@@ -33,19 +33,18 @@
     # Ask user if they want to play again
 
 # Menu Function
+
+
+import pygame
 import random
-import time as t
-import os
+
 
 def spin_grid():
-    symbols = ['C', 'W', 'L', 'A', 'S']
+    symbols = ['c', 'w', 'l', 'a', 's']
     return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
 
-def print_grid(grid):
-    print("*************")
-    for row in grid:
-        print("  ", " | ".join(row))
-    print("*************")
+def symbol_multiplier(symbol):
+    return {'c':3, 'w':4, 'l':5, 'a':10, 's':20}.get(symbol, 0)
 
 def get_payout(grid, bet):
     payout = 0
@@ -56,76 +55,114 @@ def get_payout(grid, bet):
 
     if grid[0][0] == grid[1][1] == grid[2][2]:
         payout += symbol_multiplier(grid[0][0]) * bet
+
     if grid[0][2] == grid[1][1] == grid[2][0]:
         payout += symbol_multiplier(grid[0][2]) * bet
 
     return payout
 
-def symbol_multiplier(symbol):
-    if symbol == 'C':
-        return 3
-    elif symbol == 'W':
-        return 4
-    elif symbol == 'L':
-        return 5
-    elif symbol == 'A':
-        return 10
-    elif symbol == 'S':
-        return 20
-    return 0
 
-def main():
-    money = 100
-    print("   Welcome to slots!")
-    print("Symbols: C W L A S")
 
-    while money > 0:
-        print(f"\nCurrent money: ${money}")
+pygame.init()
+width, height = 1280, 1020
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("slot machine")
+
+font = pygame.font.SysFont(None, 60)
+small_font = pygame.font.SysFont(None, 30)
+
+
+bg = pygame.image.load("docs/background.png").convert()
+bg = pygame.transform.scale(bg, (width, height))
+
+
+cell_size = 90
+gap = 18
+grid_x = 165
+grid_y = 230
+
+
+symbols = ['c', 'w', 'l', 'a', 's']
+symbol_images = {}
+
+for s in symbols:
+    img = pygame.image.load(f"docs/{s}.png").convert_alpha()
+    img = pygame.transform.scale(img, (cell_size, cell_size))
+    symbol_images[s] = img
+
+
+money = 100
+grid = spin_grid()
+bet = 10
+min_bet = 1
+max_bet = money
+message = "press space to spin"
+
+
+def draw():
+    screen.blit(bg, (0, 0))
+
+    
+    for r in range(3):
+        for c in range(3):
+            symbol = grid[r][c]
+
+            x = grid_x + c * (cell_size + gap)
+            y = grid_y + r * (cell_size + gap)
+
+            screen.blit(symbol_images[symbol], (x, y))
+
+    
+    money_text = font.render(f"${money}", True, (255, 255, 255))
+    screen.blit(money_text, (10, 10))
+
+    bet_text = font.render(f"bet: ${bet}", True, (255, 255, 255))
+    screen.blit(bet_text, (10, 80))
+
+    msg_text = small_font.render(message, True, (255, 255, 255))
+    screen.blit(msg_text, (10, height - 40))
+
+
+
+running = True
+clock = pygame.time.Clock()
+
+while running:
+    screen.fill((0, 0, 0))
+    draw()
+    pygame.display.flip()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
         
-        bet = input("Place your bet amount: $")
-        
-        if not bet.isdigit():
-            print("Please enter a valid input.")
-            continue
+            if event.key == pygame.K_UP:
+                if bet < max_bet and bet < money:
+                    bet += 1
 
-        bet = int(bet)
+            if event.key == pygame.K_DOWN:
+                if bet > min_bet:
+                    bet -= 1
 
-        if bet > money:
-            print("You don't got that much.")
-            continue
-        elif bet <= 0:
-            print("Bet must be greater than 0.")
-            continue
 
-        money -= bet
-        print("\nSpinning...\n")
-        t.sleep(1)
-        grid = spin_grid()
-        print_grid(grid)
+            if event.key == pygame.K_SPACE:
+                if money >= bet and bet > 0:
+                    money -= bet
+                    grid = spin_grid()
+                    payout = get_payout(grid, bet)
 
-        payout = get_payout(grid, bet)
-        t.sleep(1)
-        if payout > 0:
-            print(f"You won ${payout}!")
-            money += payout
-        else:
-            print("You lost.")
+                    if payout > 0:
+                        money += payout
+                        message = f"you won ${payout}!"
+                    else:
+                        message = "you lost!"
+                else:
+                    message = "no money left!"
 
-        if money == 0:
-            print("\nNo more money!")
-            break
+    clock.tick(60)
 
-        play_again = input("Do you want to spin again? (Y/N): ").upper()
-        if play_again != 'Y':
-            break
-
-    print(f"Game over!")
-
-def real_main():
-    while True:
-        main()
-        choice = input("Do you want to play again? Y/N:\n").upper()
-        if choice != "Y":
-            break
-        
-real_main()
+pygame.quit()
