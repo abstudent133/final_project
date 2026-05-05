@@ -130,10 +130,10 @@ customers = {
     "Lord Spiff of West Chedda Town" : {
         "name" : "Lord Spiff of West Chedda Town",
         "question" : "Hail and well met, could you direct me to the nearest Cheez-A-Ria?",
-        "responses" : ["Yes of course, it's just over the Spaghetti Mountains and past the ricotta dragon.", "Cheez-A-Ria? That sounds stupid.", ""],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "responses" : ["Yes of course, it's just over the Spaghetti Mountains and past the ricotta dragon.", "Cheez-A-Ria? That sounds stupid.", "We don't have one of those around here, but I can offer you spray cheese or individual slices of American cheese.", "That place is a front for the mob, I wouldn't go."],
+        "correct" : "Yes of course, it's just over the Spaghetti Mountains and past the ricotta dragon.",
+        "incorrect" : ["Cheez-A-Ria? That sounds stupid.", "We don't have one of those around here, but I can offer you spray cheese or individual slices of American cheese."],
+        "response" : "And here I was thinking this was a place of culture..."
     },
 
     "Easton Gifford" : {
@@ -147,8 +147,8 @@ customers = {
 
     "Princess Tumbleweed" : {
         "name" : "Princess Tumbleweed",
-        "question" : "",
-        "responses" : [],
+        "question" : "Couldst thou help me? I hath escaped from the wretched claw of the foul knight who hast set a bounty on my head. Can thou shelter me or shall I hence?",
+        "responses" : ["Why are you speaking in old?", ""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
