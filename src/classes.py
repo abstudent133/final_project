@@ -38,26 +38,30 @@ class User:
     
 #this is a button class to create a button in pygame
 class Button:
-    #You have to input what you want the button to say, the x and y coordinates of it's position, the width and heigth of the button, the color of the button(must be RGB style), and the color of the button when the mouse is hovering over it
-    def __init__(self, x, y, width, height, color, hover_color, text="button"):
+    def __init__(self, x, y, image, scale=1, text="button"):
+        # Load and scale the image correctly
+        img = pygame.image.load(image).convert_alpha()
+        width, height = img.get_size()
+        self.img = pygame.transform.scale(img, (int(width * scale), int(height * scale)))
+        
         self.text = text
-        self.rect = pygame.Rect(x, y, width, height)
-        self.color = color
-        self.hover_color = hover_color
+        
+        # Get image position
+        self.rect = self.img.get_rect(topleft=(x, y))
+        
+        # Create text surface once in __init__ instead of every frame
         self.font = pygame.font.SysFont("Arial", 30)
-    #this is the methode that actually creates the button
-    #the screen parameter is just the screen variable used when creating the screen
+        self.text_surf = self.font.render(self.text, True, (255, 255, 255))
+        
+        # Center text surface directly over the button's screen rect
+        self.text_rect = self.text_surf.get_rect(center=self.rect.center)
+
     def draw(self, screen):
-        # Hover effect: Change color if mouse is over button
-        mouse_pos = pygame.mouse.get_pos()
-        current_color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.color
+        # Draw the actual image onto the screen
+        screen.blit(self.img, self.rect)
         
-        pygame.draw.rect(screen, current_color, self.rect)
-        
-        # Render and center text
-        text_surf = self.font.render(self.text, True, (255, 255, 255))
-        text_rect = text_surf.get_rect(center=self.rect.center)
-        screen.blit(text_surf, text_rect)
+        # Draw the text exactly on top of the button
+        screen.blit(self.text_surf, self.text_rect)
     #This is the method that tells you if the button has been clicked
     def is_clicked(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
