@@ -181,16 +181,6 @@ def login_ui(user_dict):
                 running = False
                 login(screen, user_dict, "1")
 
-<<<<<<< HEAD
-        #else if they choose to exit
-        elif choice == "3":
-            #return quit
-            return "quit"
-        #if escape is true:
-        if escape == True:
-            #continue
-            continue
-=======
             #else if they choose to sign up run login with action being 2
             if sign_up_button.is_clicked(event):
                 running = False
@@ -226,4 +216,3 @@ users = {"user":{"password":hash_pass("password")}}
 print(users)
 users = login_ui(users)
 print(users)
->>>>>>> 66c557c751fcaa4947528a0b69ae9b97bd2ca725

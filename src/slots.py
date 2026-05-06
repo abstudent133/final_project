@@ -1,43 +1,7 @@
-#DJ, 1st, Slots Game
-
-# player money = player money in csv
-
-# Define the symbols
-    # C, W, L, A, S
-
-# Symbol Multiplier Function
-    # If symbol == C
-        # Multiplier = 3
-    # If symbol == W
-        # Multiplier = 4
-    # If symbol == L
-        # Multiplier = 5
-    # If symbol == A
-        # Multiplier = 10
-    # If symbol == S
-        # Multiplier = 20
-
-# Spin Grid Function
-    # Randomize each slot on the slot machine to a random symbol
-
-# Get Payout Function
-    # If three of the same symbol in a row or diagonal
-        # Get the multiplier of the row
-
-    # Add bet x multiplier to the player money amount
-
-# Menu Function
-    # Get user bet 
-    # Spin Grid Function
-    # Get Payout Function
-    # Ask user if they want to play again
-
-# Menu Function
-
-
 import pygame
 import random
 import time
+from classes import *
 
 def spin_grid():
     symbols = ['c', 'w', 'l', 'a', 's']
@@ -94,7 +58,7 @@ money = 100
 grid = spin_grid()
 bet = 10
 min_bet = 1
-message = "press space to spin"
+message = None
 
 
 def draw():
@@ -120,6 +84,9 @@ def draw():
     msg_text = font.render(message, True, (255, 255, 255))
     screen.blit(msg_text, (10, height - 40))
 
+    collision_test = Button(x = 40, y = 260, width = 230, height = 550, color = "red", hover_color = "green", text = None)
+    collision_test.draw(screen)
+
 
 
 running = True
@@ -127,10 +94,13 @@ clock = pygame.time.Clock()
 
 while running:
     max_bet = money
+    
     screen.fill((0, 0, 0))
+    
     draw()
     pygame.display.flip()
     time.sleep(0.5)
+
     bg = pygame.image.load("docs/background.png").convert()
     bg = pygame.transform.scale(bg, (width, height))
 
