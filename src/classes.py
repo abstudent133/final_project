@@ -100,7 +100,7 @@ class ImageButton:
 #message class
 class Message:
     #initiates all the parameters which are the text, the x and y coordinates, the font(not necesary), the size(not necesary), and the color(not necesary)
-    def __init__(self, text,x,y,font="Ariel",size=30,color=(0,0,0)):
+    def __init__(self, text,x,y,font="Ariel",size=30,color=(255,255,255)):
         self.txt = text
         self.font = font
         self.size = size
