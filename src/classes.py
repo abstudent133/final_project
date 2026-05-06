@@ -100,7 +100,7 @@ class ImageButton:
 #message class
 class Message:
     #initiates all the parameters which are the text, the x and y coordinates, the font(not necesary), the size(not necesary), and the color(not necesary)
-    def __init__(self, text,x,y,font="Ariel",size=30,color=(0,0,0)):
+    def __init__(self, text,x,y,font="Ariel",size=30,color=(255,255,255)):
         self.txt = text
         self.font = font
         self.size = size
@@ -112,13 +112,63 @@ class Message:
         font = pygame.font.SysFont(self.font,self.size)
         text_surface = font.render(self.txt,True,self.color)
         screen.blit(text_surface,(self.x,self.y))
-    
-    
 
+#class for text inputs
+class TextInput:
 
-    
+    def __init__(self, x, y, width, height, font_size=32):
 
+        self.rect = pygame.Rect(x, y, width, height)
 
+        self.active_color = pygame.Color('dodgerblue2')
+        self.passive_color = pygame.Color('lightskyblue3')
 
-    
-    
+        self.color = self.passive_color
+
+        self.font = pygame.font.Font(None, font_size)
+
+        #stores current text
+        self.text = ''
+
+        #checks if box is active
+        self.active = False
+
+    #handles typing and clicking
+    def handle_event(self, event):
+
+        #if mouse clicked
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            #if mouse clicked inside box
+            if self.rect.collidepoint(event.pos):
+                self.active = True
+
+            #otherwise deactivate
+            else:
+                self.active = False
+
+            #change border color
+            self.color = self.active_color if self.active else self.passive_color
+
+        #if key pressed while active
+        if event.type == pygame.KEYDOWN and self.active:
+
+            #delete last character
+            if event.key == pygame.K_BACKSPACE:
+                self.text = self.text[:-1]
+
+            #ignore enter key
+            elif event.key != pygame.K_RETURN:
+                self.text += event.unicode
+
+    #draws text box
+    def draw(self, screen):
+
+        #render text
+        txt_surface = self.font.render(self.text, True, (255,255,255))
+
+        #draw text
+        screen.blit(txt_surface, (self.rect.x + 5, self.rect.y + 5))
+
+        #draw rectangle
+        pygame.draw.rect(screen, self.color, self.rect, 2)
