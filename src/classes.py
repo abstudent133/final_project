@@ -100,7 +100,7 @@ class ImageButton:
 #message class
 class Message:
     #initiates all the parameters which are the text, the x and y coordinates, the font(not necesary), the size(not necesary), and the color(not necesary)
-    def __init__(self, text,x,y,font="Ariel",size=30,color=(0,0,0)):
+    def __init__(self, text,x,y,font="Ariel",size=30,color=(255,255,255)):
         self.txt = text
         self.font = font
         self.size = size
@@ -115,56 +115,60 @@ class Message:
 
 #class for text inputs
 class TextInput:
+
     def __init__(self, x, y, width, height, font_size=32):
+
         self.rect = pygame.Rect(x, y, width, height)
+
         self.active_color = pygame.Color('dodgerblue2')
         self.passive_color = pygame.Color('lightskyblue3')
-        self.color = self.passive_color  # Start with passive color
+
+        self.color = self.passive_color
+
         self.font = pygame.font.Font(None, font_size)
+
+        #stores current text
         self.text = ''
+
+        #checks if box is active
         self.active = False
 
+    #handles typing and clicking
     def handle_event(self, event):
+
+        #if mouse clicked
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Toggle active state
+
+            #if mouse clicked inside box
             if self.rect.collidepoint(event.pos):
                 self.active = True
+
+            #otherwise deactivate
             else:
                 self.active = False
-            # Update color immediately
+
+            #change border color
             self.color = self.active_color if self.active else self.passive_color
 
-        if event.type == pygame.KEYDOWN:
-            if self.active:
-                if event.key == pygame.K_RETURN:
-                    final_text = self.text
-                    self.text = ''  # Clear the box
-                    return final_text  # Return the string only on Enter
-                elif event.key == pygame.K_BACKSPACE:
-                    self.text = self.text[:-1]
-                else:
-                    self.text += event.unicode
-        
-        return None  # Explicitly return None so you don't overwrite variables
+        #if key pressed while active
+        if event.type == pygame.KEYDOWN and self.active:
 
+            #delete last character
+            if event.key == pygame.K_BACKSPACE:
+                self.text = self.text[:-1]
+
+            #ignore enter key
+            elif event.key != pygame.K_RETURN:
+                self.text += event.unicode
+
+    #draws text box
     def draw(self, screen):
-        # Render text (using box color for consistency)
-        txt_surface = self.font.render(self.text, True, self.color)
-        
-        # Auto-resize if text is long
-        width = max(self.rect.width, txt_surface.get_width() + 10)
-        self.rect.w = width
-        
-        # Draw text and border
+
+        #render text
+        txt_surface = self.font.render(self.text, True, (255,255,255))
+
+        #draw text
         screen.blit(txt_surface, (self.rect.x + 5, self.rect.y + 5))
+
+        #draw rectangle
         pygame.draw.rect(screen, self.color, self.rect, 2)
-    
-    
-
-
-    
-
-
-
-    
-    
