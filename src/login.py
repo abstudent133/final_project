@@ -23,22 +23,26 @@ def login(screen, users_dict, action):
     pygame.init()
 
     #create messages
-    title = Message("This is the login for the DINO CASINO!",300,500)
+    
     username_input = Message("Please input your username here:",300,500)
     password_input = Message("Please input your password here: ",300,400)
     incorrect_pass = Message("Sorry that password is incorrect please enter the correct password.",300,400)
     incorrect_user = Message("Sorry that is an invalid username. Please enter a valid username.",300,400)
 
     #create input boxes
-    input_box_name = TextInput(300, 300, 140, 32)
-    input_box_pass = TextInput(300, 100, 140, 32)
+    input_box_name = TextInput(300, 450, 140, 32)
+    input_box_pass = TextInput(300, 350, 140, 32)
 
     #variables to store input
     username = ""
     password = ""
 
     running = True
-
+    show_wrong_pass = False
+    show_wrong_user = False
+    show_sign_up = False
+    show_login = False
+    show_pass = False
     #while true
     while running:
 
@@ -53,19 +57,18 @@ def login(screen, users_dict, action):
                 running = False
                 return "quit"
 
-            #show a welcome message and explain the login
-            title.draw(screen)
 
             #if they choose to create a new user
             if action == "2":
 
                 #ask for username
-                username_input.draw(screen)
-                username = input_box_name.handle_event(event)
+                input_box_name.handle_event(event)
+                username = input_box_name.text
 
                 #ask for password
-                password_input.draw(screen)
-                password = input_box_pass.handle_event(event)
+                input_box_pass.handle_event(event)
+                password = input_box_pass.text
+                show_sign_up = True
 
                 #if enter key pressed
                 if event.type == pygame.KEYDOWN:
@@ -78,19 +81,18 @@ def login(screen, users_dict, action):
                         }
 
                         #return good
-                        return "good"
+                        return users_dict
 
             #else if they choose login
             elif action == "1":
 
                 #ask for username
-                username_input.draw(screen)
-                username = input_box_name.handle_event(event)
-
+                input_box_name.handle_event(event)
+                username = input_box_name.text
                 #ask for password
-                password_input.draw(screen)
-                password = input_box_pass.handle_event(event)
-
+                input_box_pass.handle_event(event)
+                password = input_box_pass.text
+                show_login = True
                 #if enter key pressed
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -109,28 +111,41 @@ def login(screen, users_dict, action):
 
                             #if password matches
                             if hashed_password == dict_pass:
-
+                                show_pass = True
                                 #return good
                                 return "good"
 
                             #else show incorrect password
                             else:
-                                incorrect_pass.draw(screen)
+                                show_wrong_pass = True
 
                         #else show incorrect username
                         else:
-                            incorrect_user.draw(screen)
+                            show_wrong_user = True
 
             #else if they choose to exit
+            
             elif action == "3":
 
                 #return quit
                 return "quit"
-
-        #draw input boxes
-        input_box_name.draw(screen)
-        input_box_pass.draw(screen)
-
+        
+        if show_sign_up== True:
+            username_input.draw(screen)
+            password_input.draw(screen)
+            input_box_name.draw(screen)
+            input_box_pass.draw(screen)
+        if show_login == True:
+            username_input.draw(screen)
+            input_box_name.draw(screen)
+        if show_pass == True:
+            password_input.draw(screen)
+            input_box_pass.draw(screen)
+        if show_wrong_pass == True:
+            incorrect_pass.draw(screen)
+        if show_wrong_user == True:
+            incorrect_user.draw(screen)
+        
         #update screen
         pygame.display.flip()
 
@@ -141,7 +156,7 @@ def login_ui(user_dict):
 
     #set up space
     pygame.init()
-
+    title = Message("This is the login for the DINO CASINO!",300,500)
     screen = pygame.display.set_mode((1280, 720))
 
     running = True
@@ -163,16 +178,20 @@ def login_ui(user_dict):
 
             #if login was clicked run login and with action being 1
             if login_button.is_clicked(event):
+                running = False
                 login(screen, user_dict, "1")
 
             #else if they choose to sign up run login with action being 2
             if sign_up_button.is_clicked(event):
-                login(screen, user_dict, "2")
+                running = False
+                user_dict = login(screen, user_dict, "2")
 
             #else if they choose to exit run login with action being 3
             if exit_button.is_clicked(event):
+                running = False
                 login(screen, user_dict, "3")
-
+        title.draw(screen)
+        screen.fill((0,0,0))
         #draw all of the buttons
         login_button.draw(screen)
         sign_up_button.draw(screen)
@@ -182,6 +201,7 @@ def login_ui(user_dict):
         pygame.display.flip()
 
     pygame.quit()
+    return user_dict
 # DICTIONARY STRUCTURE:
     # users = {
     # username = {
@@ -192,11 +212,7 @@ def login_ui(user_dict):
     #}
 #}    
 
-user_dict = {"Ronald":{"password":"password",
-                       "money":100}}
-
-login_ui(user_dict)
-
-            
-
-
+users = {"user":{"password":hash_pass("password")}}
+print(users)
+users = login_ui(users)
+print(users)
