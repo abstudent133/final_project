@@ -119,52 +119,49 @@ customers = {
     },
 
     "Sir Onion-Eyes" : {
-        "name" : "",
+        "name" : "Sir Onion-Eyes",
         "question" : "",
-        "responses" : [],
+        "responses" : [""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
     },
      
     "Lord Spiff of West Chedda Town" : {
-        "name" : "",
-        "question" : "",
-        "responses" : [],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "name" : "Lord Spiff of West Chedda Town",
+        "question" : "Hail and well met, could you direct me to the nearest Cheez-A-Ria?",
+        "responses" : ["Yes of course, it's just over the Spaghetti Mountains and past the ricotta dragon.", "Cheez-A-Ria? That sounds stupid.", "We don't have one of those around here, but I can offer you spray cheese or individual slices of American cheese.", "That place is a front for the mob, I wouldn't go."],
+        "correct" : "Yes of course, it's just over the Spaghetti Mountains and past the ricotta dragon.",
+        "incorrect" : ["Cheez-A-Ria? That sounds stupid.", "We don't have one of those around here, but I can offer you spray cheese or individual slices of American cheese."],
+        "response" : "And here I was thinking this was a place of culture..."
     },
 
     "Easton Gifford" : {
-        "name" : "",
-        "question" : "",
-        "responses" : [],
+        "name" : "Easton Grifford",
+        "question" : "Do you have Mountain Dew here, specifically Baja Blast?",
+        "responses" : ["I'm not participating in your Mountain Dew scamming, get out.", ""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
     },
 
     "Princess Tumbleweed" : {
-        "name" : "",
-        "question" : "",
-        "responses" : [],
+        "name" : "Princess Tumbleweed",
+        "question" : "Couldst thou help me? I hath escaped from the wretched claw of the foul knight who hast set a bounty on my head. Can thou shelter me or shall I hence?",
+        "responses" : ["Why are you speaking in old?", ""],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
     },
 
     "Feezlegorp of X2N30-*9" :{
-        "name" : "",
+        "name" : "Feezlegorp of X2N30-*9",
         "question" : "",
         "responses" : [],
         "correct" : "",
         "incorrect" : [""],
         "response" : ""
     },
-
-    ""
-
 }
 
 customers_list_format = ["Susan McCombs", "Joshua Jermithan", "Freddie Skips", "Tania the Destroyer","Mr. Egg Senior", "Riswalda Hicks", "Ol' Moldy Bones", "That one guy who always buys choclate bars and them throws them at birds.", "Dave Smith", "Anthony Wobble-Legs"]
