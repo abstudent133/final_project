@@ -43,7 +43,7 @@ def display_profile(user):
 
 # load buttons
 def load_hats():
-    hats = load_df("docs/shop_items.csv")
+    hats = {}
     # creates a button for every hat
     conductor = hats["conductor"]["file path"]
     top = hats["top"]["file path"]

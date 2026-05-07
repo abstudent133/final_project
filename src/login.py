@@ -18,19 +18,19 @@ def login(screen, users_dict, action):
     #parameters: dictionary, searching
 
         #return true if username exists
-        return searching in user_dict
+        return searching in user_dict.keys()
 
     pygame.init()
 
     #create messages
     
-    username_input = Message("Please input your username here:",300,500)
-    password_input = Message("Please input your password here: ",300,400)
+    username_input = Message("Please input your username here:",300,200)
+    password_input = Message("Please input your password here: ",300,300)
     incorrect_pass = Message("Sorry that password is incorrect please enter the correct password.",300,400)
     incorrect_user = Message("Sorry that is an invalid username. Please enter a valid username.",300,400)
 
     #create input boxes
-    input_box_name = TextInput(300, 450, 140, 32)
+    input_box_name = TextInput(300, 250, 140, 32)
     input_box_pass = TextInput(300, 350, 140, 32)
 
     #variables to store input
@@ -41,8 +41,6 @@ def login(screen, users_dict, action):
     show_wrong_pass = False
     show_wrong_user = False
     show_sign_up = False
-    show_login = False
-    show_pass = False
     #while true
     while running:
 
@@ -92,7 +90,7 @@ def login(screen, users_dict, action):
                 #ask for password
                 input_box_pass.handle_event(event)
                 password = input_box_pass.text
-                show_login = True
+                show_sign_up = True
                 #if enter key pressed
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -111,7 +109,6 @@ def login(screen, users_dict, action):
 
                             #if password matches
                             if hashed_password == dict_pass:
-                                show_pass = True
                                 #return good
                                 return "good"
 
@@ -135,12 +132,6 @@ def login(screen, users_dict, action):
             password_input.draw(screen)
             input_box_name.draw(screen)
             input_box_pass.draw(screen)
-        if show_login == True:
-            username_input.draw(screen)
-            input_box_name.draw(screen)
-        if show_pass == True:
-            password_input.draw(screen)
-            input_box_pass.draw(screen)
         if show_wrong_pass == True:
             incorrect_pass.draw(screen)
         if show_wrong_user == True:
@@ -161,9 +152,9 @@ def login_ui(user_dict):
 
     running = True
 
-    login_button = Button(200,200,100,50,(250,0,0),(0,0,255),"Login")
-    sign_up_button = Button(400,200,100,50,(250,0,0),(0,0,255),"Sign Up")
-    exit_button = Button(600,200,100,50,(250,0,0),(0,0,255),"Exit")
+    login_button = Button(200,200,"docs/small_button.png",scale=.25,text="Login")
+    sign_up_button = Button(400,200,"docs/mid_button.png",scale=.25,text="Sign Up")
+    exit_button = Button(600,200,"docs/small_button.png",scale=.25,text="Exit")
 
     #start loop
     while running:

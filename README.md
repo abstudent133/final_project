@@ -5,17 +5,17 @@
 - Slots
 - Poker
 - Blackjack
-- Working a job
 
 # Planned Features
 - Avatar customization
 - Roulette
+- Working a job
 
 # How to Run
 - Open new terminal
 - input "python3 -m pip install pygame"
 - input "pip install pandas"
-- Make sure you have python 3.12 or better
+- Make sure you have python 3.12
 - Open main.py and run it
 
 # Contributors
