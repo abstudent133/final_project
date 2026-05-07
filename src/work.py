@@ -22,7 +22,7 @@ customers = {
     "Susan McCombs" : {
         "name" : "Susan McCombs",
         "question" : "Hi, yes my name is Susan, unfortunate, I know. Could you direct me to the nearest teleporter to Earth?",
-        "responses" : ["Earth one or two ma'am?", "Earth was recently demolished to make room for a subspace highway.", "Why? Gonna go 'Earth it up?' with some Earth chump? You chump.", "Honestly I don't even know dude... Right I guess?"],
+        "responses" : ["Earth one or two ma'am?", "Earth was recently demolished to make room for a new hyperspace bypass.", "Why? Gonna go 'Earth it up?' with some Earth chump? You chump.", "Honestly I don't even know dude... Right I guess?"],
         "correct" : "Earth one or two ma'am?",
         "incorrect" : ["Why? Gonna go 'Earth it up?' with some Earth chump? You chump."],
         "response" : "How did you find out my fathers name is 'Earth Chump'!?"
@@ -120,11 +120,11 @@ customers = {
 
     "Sir Onion-Eyes" : {
         "name" : "Sir Onion-Eyes",
-        "question" : "",
-        "responses" : [""],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "question" : "Hello there m'lady... Have you seen a tumbleweed lady around here? She ran off after I asked her if she wanted to join my discord server and aura farm on League of Ledgends with me.",
+        "responses" : ["She was a total beta loser anyway, hang out with a real goat like me and we can mog with our positive canthal tilt together.", "For the love of Feezlegorp get out of this place and get to an exorcist.", "Did you not see the sign that said 'no League of Ledgends players allowed'?", "... Cease."],
+        "correct" : "She was a total beta loser anyway, hang out with a real goat like me and we can mog with our positive canthal tilt together.",
+        "incorrect" : ["For the love of Feezlegorp get out of this place and get to an exorcist.", "Did you not see the sign that said 'no League of Ledgends players allowed'?", "... Cease."],
+        "response" : "Nice guys really do finish last..."
     },
      
     "Lord Spiff of West Chedda Town" : {
@@ -139,10 +139,10 @@ customers = {
     "Easton Gifford" : {
         "name" : "Easton Grifford",
         "question" : "Do you have Mountain Dew here, specifically Baja Blast?",
-        "responses" : ["I'm not participating in your Mountain Dew scamming, get out.", "No but we have liquified frog eyes.", ""],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "responses" : ["I'm not participating in your Mountain Dew scamming, get out.", "No but we have liquified frog eyes.", "Get out with your crazy ideas, why would anyone ever blast the baja?", "I dunno."],
+        "correct" : "No but we have liquified frog eyes.",
+        "incorrect" : ["Get out with your crazy ideas, why would anyone ever blast the baja?"],
+        "response" : "Ok I guess I'll just go to Walmart then. You JUST lost a customer. CHUD."
     },
 
     "Princess Tumbleweed" : {
@@ -158,7 +158,7 @@ customers = {
         "name" : "Feezlegorp of X2N30-*9",
         "question" : "**-gleep glorp gleebleglob ##4?",
         "responses" : ["That's so real dude.", "Uhhh.... Awfully hot coffee pot?", "Sorry, I don't speak alien freak.", "Bogos binted?"],
-        "correct" : "That's so real dude.",
+        "correct" : "Bogos binted?",
         "incorrect" : ["Sorry, I don't speak alien freak."],
         "response" : "Glarp//"
     },
