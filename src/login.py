@@ -18,7 +18,7 @@ def login(screen, users_dict, action):
     #parameters: dictionary, searching
 
         #return true if username exists
-        return searching in user_dict
+        return searching in user_dict.keys()
 
     pygame.init()
 
@@ -41,8 +41,6 @@ def login(screen, users_dict, action):
     show_wrong_pass = False
     show_wrong_user = False
     show_sign_up = False
-    show_login = False
-    show_pass = False
     #while true
     while running:
 
@@ -92,7 +90,7 @@ def login(screen, users_dict, action):
                 #ask for password
                 input_box_pass.handle_event(event)
                 password = input_box_pass.text
-                show_login = True
+                show_sign_up = True
                 #if enter key pressed
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -111,7 +109,6 @@ def login(screen, users_dict, action):
 
                             #if password matches
                             if hashed_password == dict_pass:
-                                show_pass = True
                                 #return good
                                 return "good"
 
@@ -134,12 +131,6 @@ def login(screen, users_dict, action):
             username_input.draw(screen)
             password_input.draw(screen)
             input_box_name.draw(screen)
-            input_box_pass.draw(screen)
-        if show_login == True:
-            username_input.draw(screen)
-            input_box_name.draw(screen)
-        if show_pass == True:
-            password_input.draw(screen)
             input_box_pass.draw(screen)
         if show_wrong_pass == True:
             incorrect_pass.draw(screen)
