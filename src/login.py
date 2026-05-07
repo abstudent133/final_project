@@ -24,13 +24,13 @@ def login(screen, users_dict, action):
 
     #create messages
     
-    username_input = Message("Please input your username here:",300,500)
-    password_input = Message("Please input your password here: ",300,400)
+    username_input = Message("Please input your username here:",300,200)
+    password_input = Message("Please input your password here: ",300,300)
     incorrect_pass = Message("Sorry that password is incorrect please enter the correct password.",300,400)
     incorrect_user = Message("Sorry that is an invalid username. Please enter a valid username.",300,400)
 
     #create input boxes
-    input_box_name = TextInput(300, 450, 140, 32)
+    input_box_name = TextInput(300, 250, 140, 32)
     input_box_pass = TextInput(300, 350, 140, 32)
 
     #variables to store input
@@ -152,9 +152,9 @@ def login_ui(user_dict):
 
     running = True
 
-    login_button = Button(200,200,100,50,(250,0,0),(0,0,255),"Login")
-    sign_up_button = Button(400,200,100,50,(250,0,0),(0,0,255),"Sign Up")
-    exit_button = Button(600,200,100,50,(250,0,0),(0,0,255),"Exit")
+    login_button = Button(200,200,"docs/small_button.png",scale=.25,text="Login")
+    sign_up_button = Button(400,200,"docs/mid_button.png",scale=.25,text="Sign Up")
+    exit_button = Button(600,200,"docs/small_button.png",scale=.25,text="Exit")
 
     #start loop
     while running:

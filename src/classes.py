@@ -50,7 +50,7 @@ class Button:
         self.rect = self.img.get_rect(topleft=(x, y))
         
         # Create text surface once in __init__ instead of every frame
-        self.font = pygame.font.SysFont("Arial", 30)
+        self.font = pygame.font.SysFont("Impact", 30)
         self.text_surf = self.font.render(self.text, True, (255, 255, 255))
         
         # Center text surface directly over the button's screen rect
