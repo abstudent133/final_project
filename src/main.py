@@ -1,6 +1,5 @@
 #import all the things
 from blackjack import *
-from gift_shop import *
 from login import *
 from poker import *
 from slots import *
