@@ -22,7 +22,7 @@ customers = {
     "Susan McCombs" : {
         "name" : "Susan McCombs",
         "question" : "Hi, yes my name is Susan, unfortunate, I know. Could you direct me to the nearest teleporter to Earth?",
-        "responses" : ["Earth one or two ma'am?", "Earth was recently demolished to make room for a subspace highway.", "Why? Gonna go 'Earth it up?' with some Earth chump? You chump.", "Honestly I don't even know dude... Right I guess?"],
+        "responses" : ["Earth one or two ma'am?", "Earth was recently demolished to make room for a new hyperspace bypass.", "Why? Gonna go 'Earth it up?' with some Earth chump? You chump.", "Honestly I don't even know dude... Right I guess?"],
         "correct" : "Earth one or two ma'am?",
         "incorrect" : ["Why? Gonna go 'Earth it up?' with some Earth chump? You chump."],
         "response" : "How did you find out my fathers name is 'Earth Chump'!?"
@@ -52,7 +52,7 @@ customers = {
         "responses" : ["Sure.", "Only if you can pay me more than my boss.", "Dude who are you?", "Actually there's a retirement home down the street which seems perfect for this very cause."],
         "correct" : "Actually there's a retirement home down the street which seems perfect for this very cause.",
         "incorrect" : ["Only if you can pay me more than my boss.", "Dude who are you?"],
-        "response" : "Lord forbid a girl have hobbies."
+        "response" : "God forbid a girl has hobbies."
     },
 
     "Mr. Egg Senior" : {
@@ -70,7 +70,7 @@ customers = {
         "responses" : ["Did you just quote 'a Christmas Carol'?", "Do you need something ma'am?", "Ok.", "I don't need a fortune teller to tell me things I already know."],
         "correct" : "Ok.",
         "incorrect" : ["Did you just quote 'a Christmas Carol'?"],
-        "response" : "What? NO! What uhh, what even is, what did you say? A 'Fishnest... Barrel'?"
+        "response" : "What? NO! What uhh, what even is, what did you say? 'A Fishnest... Barrel'?"
     },
 
     "Ol' Moldy Bones" : {
@@ -112,7 +112,7 @@ customers = {
     "Nancy No-Brains" : {
         "name" : "Nancy No-Brains",
         "question" : "Do you wanna talk about how crypto is the future?",
-        "responses" : ["Nancy leave right now of I'LL douse you in gasoline and leave you with Sir Onion-Eyes.", "YES! I invest in NFT's any chance I get!", "The real future of society is almond moms.", "I hope you know you are actively reversing our progress as a society."],
+        "responses" : ["Nancy leave right now or I'LL douse you in gasoline and leave you with Sir Onion-Eyes.", "YES! I invest in NFT's any chance I get!", "The real future of society is almond moms.", "I hope you know you are actively reversing our progress as a society."],
         "correct" : "YES! I invest in NFT's any chance I get!",
         "incorrect" : ["Nancy leave right now of I'LL douse you in gasoline and leave you with Sir Onion-Eyes.", "I hope you know you are actively reversing our progress as a society."],
         "response" : "But I live for the grift!"
@@ -120,11 +120,11 @@ customers = {
 
     "Sir Onion-Eyes" : {
         "name" : "Sir Onion-Eyes",
-        "question" : "",
-        "responses" : [""],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "question" : "Hello there m'lady... Have you seen a tumbleweed lady around here? She ran off after I asked her if she wanted to join my discord server and aura farm on League of Ledgends with me.",
+        "responses" : ["She was a total beta loser anyway, hang out with a real goat like me and we can mog with our positive canthal tilt together.", "For the love of Feezlegorp get out of this place and get to an exorcist.", "Did you not see the sign that said 'no League of Ledgends players allowed'?", "... Cease."],
+        "correct" : "She was a total beta loser anyway, hang out with a real goat like me and we can mog with our positive canthal tilt together.",
+        "incorrect" : ["For the love of Feezlegorp get out of this place and get to an exorcist.", "Did you not see the sign that said 'no League of Ledgends players allowed'?", "... Cease."],
+        "response" : "Nice guys really do finish last..."
     },
      
     "Lord Spiff of West Chedda Town" : {
@@ -139,28 +139,28 @@ customers = {
     "Easton Gifford" : {
         "name" : "Easton Grifford",
         "question" : "Do you have Mountain Dew here, specifically Baja Blast?",
-        "responses" : ["I'm not participating in your Mountain Dew scamming, get out.", ""],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "responses" : ["I'm not participating in your Mountain Dew scamming, get out.", "No but we have liquified frog eyes.", "Get out with your crazy ideas, why would anyone ever blast the baja?", "I dunno."],
+        "correct" : "No but we have liquified frog eyes.",
+        "incorrect" : ["Get out with your crazy ideas, why would anyone ever blast the baja?"],
+        "response" : "Ok I guess I'll just go to Walmart then. You JUST lost a customer. CHUD."
     },
 
     "Princess Tumbleweed" : {
         "name" : "Princess Tumbleweed",
-        "question" : "Couldst thou help me? I hath escaped from the wretched claw of the foul knight who hast set a bounty on my head. Can thou shelter me or shall I hence?",
-        "responses" : ["Why are you speaking in old?", ""],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "question" : "Couldst thou help me? I hath escaped from the wretched claw of the foul knight who hast set a bounty on my head. Canst thou shelter me or shall I hence?",
+        "responses" : ["Why are you speaking in old?", "This place isn't a good hiding spot, but I heard there's a mummies tomb on the west side of town.", "Go sit by a bush SHRUB-HEAD, you'll fit right in.", "The restaraunt next door has apretty big meat locker."],
+        "correct" : "This place isn't a good hiding spot, but I heard there's a mummies tomb on the west side of town.",
+        "incorrect" : ["Why are you speaking in old?", "Go sit by a bush SHRUB-HEAD, you'll fit right in."],
+        "response" : "What a cruel world..."
     },
 
     "Feezlegorp of X2N30-*9" :{
         "name" : "Feezlegorp of X2N30-*9",
-        "question" : "",
-        "responses" : [],
-        "correct" : "",
-        "incorrect" : [""],
-        "response" : ""
+        "question" : "**-gleep glorp gleebleglob ##4?",
+        "responses" : ["That's so real dude.", "Uhhh.... Awfully hot coffee pot?", "Sorry, I don't speak alien freak.", "Bogos binted?"],
+        "correct" : "Bogos binted?",
+        "incorrect" : ["Sorry, I don't speak alien freak."],
+        "response" : "Glarp//"
     },
 }
 
