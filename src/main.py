@@ -9,18 +9,18 @@ from classes import *
 
 pygame.init()
 
-screen_x = 1320
-screen_y = 960
-font = pygame.font.SysFont("Arial", 12)
-screen = pygame.display.set_mode((screen_x, screen_y))
-clock = pygame.time.Clock()
+#screen_x = 1320
+#screen_y = 960
+#font = pygame.font.SysFont("Arial", 12)
+#screen = pygame.display.set_mode((screen_x, screen_y))
+#clock = pygame.time.Clock()
 
-running = True
+#running = True
 
-shop_button = ImageButton()
+#shop_button = ImageButton()
 
-while running:
-    pass
+#while running:
+    #pass
 
 #main function
 def main():
@@ -50,7 +50,7 @@ def main():
                 choice = input("Please input the number of the action you would like to complete: ")
                 #if they choose edit profile(shop)
                 if choice == "1":
-                    display_profile()
+                    #display_profile()
                     pass
                 #else if they choose poker
                 elif choice == "2":
@@ -72,3 +72,5 @@ def main():
                 elif choice == "6":
                     #break
                     break
+
+main()
