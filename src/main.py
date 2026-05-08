@@ -50,23 +50,23 @@ def main():
                 choice = input("Please input the number of the action you would like to complete: ")
                 #if they choose edit profile(shop)
                 if choice == "1":
-                    #call shop function
+                    display_profile()
                     pass
                 #else if they choose poker
                 elif choice == "2":
-                    #run poker game
+                    poker_main()
                     pass
                 #else if they choose blackjack
                 elif choice == "3":
-                    #run blackjack
+                    blackjack_main()
                     pass
                 #else if they choose slots
                 elif choice == "4":
-                    #run slots
+                    slots_main()
                     pass
                 #else if they choose to work
                 elif choice == "5":
-                    #call work function
+                    work()
                     pass
                 #else if they choose exit
                 elif choice == "6":
