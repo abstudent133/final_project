@@ -3,7 +3,6 @@ import json
 
 #screen.blit(text, (x, y))
 
-
 pygame.init()
 
 screen_x = 1320
@@ -54,7 +53,11 @@ def draw_face():
             elif event.type == pygame.KEYDOWN:
                 mods = pygame.key.get_mods()
 
-                if event.key == pygame.K_z and mods & pygame.KMOD_CTRL:
+                if event.key == pygame.K_q and mods & pygame.KMOD_CTRL:
+                    if strokes:
+                        strokes = []
+
+                elif event.key == pygame.K_z and mods & pygame.KMOD_CTRL:
                     if strokes:
                         strokes.pop()
 

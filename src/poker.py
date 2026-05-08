@@ -1,286 +1,273 @@
+import pygame
 import random
 from collections import Counter
 from itertools import combinations
-import os
-import time
+import sys
 
-def clear_screen():
-    if os.name == 'nt':
-        os.system('CLS')
-    else:
-        os.system('clear')
+def poker_main():
+    pygame.init()
 
-def new_deck():
-    return [(r, s) for r in range(2, 15) for s in "SHDC"]
+    width, height = 1200, 700
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("Texas Hold'em Poker")
 
-def card_str(card):
-    faces = {11: "J", 12: "Q", 13: "K", 14: "A"}
-    r, s = card
-    return f"{faces.get(r, r)}{s}"
+    font = pygame.font.SysFont("arial", 24)
+    big_font = pygame.font.SysFont("arial", 36)
 
-def evaluate(hand):
-    ranks = sorted([c[0] for c in hand], reverse=True)
-    suits = [c[1] for c in hand]
-    count = Counter(ranks)
-    counts = sorted(count.values(), reverse=True)
-    flush = len(set(suits)) == 1
-    straight = ranks == list(range(ranks[0], ranks[0]-5, -1))
-    if ranks == [14,5,4,3,2]:
-        straight = True
-        ranks = [5,4,3,2,1]
-    if flush and ranks == [14,13,12,11,10]:
-        return (10, ranks)
-    if flush and straight:
-        return (9, ranks)
-    if counts == [4,1]:
-        return (8, [count.most_common(1)[0][0]])
-    if counts == [3,2]:
-        return (7, [count.most_common(1)[0][0]])
-    if flush:
-        return (6, ranks)
-    if straight:
-        return (5, ranks)
-    if counts == [3,1,1]:
-        return (4, [count.most_common(1)[0][0]])
-    if counts == [2,2,1]:
-        pairs = sorted([r for r,c in count.items() if c==2], reverse=True)
-        return (3, pairs)
-    if counts == [2,1,1,1]:
-        return (2, [count.most_common(1)[0][0]])
-    return (1, ranks)
+    green = (20, 120, 20)
+    white = (255, 255, 255)
+    black = (0, 0, 0)
+    red = (200, 50, 50)
+    blue = (50, 100, 200)
+    gray = (180, 180, 180)
+    yellow = (255, 215, 0)
 
-def best_hand(seven):
-    best = None
-    for five in combinations(seven,5):
-        score = evaluate(list(five))
-        if best is None or score > best:
-            best = score
-    return best
+    clock = pygame.time.Clock()
 
-def ai_strength(hand, community):
-    combined = hand + community
-    if len(combined)<5:
-        return max(c[0] for c in combined)
-    score = best_hand(combined)
-    return score[0]
+    def new_deck():
+        return [(r, s) for r in range(2, 15) for s in "SHDC"]
 
-def ai_action(player_idx, hand, community, chips, current_bet, to_call, pot, position):
-    strength = ai_strength(hand, community)
-    stack = chips[player_idx]
-    if strength <= 2:
-        fold_prob, call_prob, raise_prob = 0.5,0.4,0.1
-    elif strength <= 5:
-        fold_prob, call_prob, raise_prob = 0.2,0.6,0.2
-    elif strength <= 7:
-        fold_prob, call_prob, raise_prob = 0.1,0.5,0.4
-    else:
-        fold_prob, call_prob, raise_prob = 0.0,0.3,0.7
-    if pot > stack*0.3 and strength>2:
-        call_prob+=0.1
-        fold_prob-=0.1
-    call_prob=min(call_prob,1.0)
-    fold_prob=max(fold_prob,0.0)
-    if position>=2:
-        raise_prob+=0.1
-        call_prob-=0.05
-        fold_prob-=0.05
-    total=fold_prob+call_prob+raise_prob
-    fold_prob/=total
-    call_prob/=total
-    raise_prob/=total
-    rand=random.random()
-    if rand<fold_prob:
-        return 'fold',0
-    elif rand<fold_prob+call_prob:
-        bet=min(to_call,stack)
-        return 'call',bet
-    else:
-        if strength<=4:
-            low,high=5,min(15,stack)
-        elif strength<=7:
-            low,high=10,min(25,stack)
-        else:
-            low,high=20,min(40,stack)
-        if low>high:
-            raise_amount=stack
-        else:
-            raise_amount=random.randint(low,high)
-        return 'raise',raise_amount
+    def card_str(card):
+        faces = {11: "J", 12: "Q", 13: "K", 14: "A"}
+        r, s = card
+        return f"{faces.get(r, r)}{s}"
 
-def betting_round(players, active, chips, pot, community, current_bet=0):
-    bets=[0]*len(players)
-    ai_moves=[]
-    while True:
-        changed=False
-        if active.count(True)==1:
-            return pot
-        for i in range(len(players)):
+    def evaluate(hand):
+        ranks = sorted([c[0] for c in hand], reverse=True)
+        suits = [c[1] for c in hand]
+
+        count = Counter(ranks)
+        counts = sorted(count.values(), reverse=True)
+
+        flush = len(set(suits)) == 1
+        straight = ranks == list(range(ranks[0], ranks[0] - 5, -1))
+
+        if ranks == [14, 5, 4, 3, 2]:
+            straight = True
+            ranks = [5, 4, 3, 2, 1]
+
+        if flush and ranks == [14, 13, 12, 11, 10]:
+            return (10, ranks)
+        if flush and straight:
+            return (9, ranks)
+        if counts == [4, 1]:
+            return (8, ranks)
+        if counts == [3, 2]:
+            return (7, ranks)
+        if flush:
+            return (6, ranks)
+        if straight:
+            return (5, ranks)
+        if counts == [3, 1, 1]:
+            return (4, ranks)
+        if counts == [2, 2, 1]:
+            return (3, ranks)
+        if counts == [2, 1, 1, 1]:
+            return (2, ranks)
+
+        return (1, ranks)
+
+    def best_hand(seven):
+        best = None
+
+        for five in combinations(seven, 5):
+            score = evaluate(list(five))
+
+            if best is None or score > best:
+                best = score
+
+        return best
+
+    class Button:
+        def __init__(self, x, y, w, h, text, color):
+            self.rect = pygame.Rect(x, y, w, h)
+            self.text = text
+            self.color = color
+
+        def draw(self):
+            pygame.draw.rect(screen, self.color, self.rect)
+            pygame.draw.rect(screen, black, self.rect, 3)
+
+            txt = font.render(self.text, True, white)
+
+            screen.blit(
+                txt,
+                (
+                    self.rect.x + self.rect.width // 2 - txt.get_width() // 2,
+                    self.rect.y + self.rect.height // 2 - txt.get_height() // 2,
+                ),
+            )
+
+        def clicked(self, pos):
+            return self.rect.collidepoint(pos)
+
+    chips = [100] * 4
+    pot = 0
+    message = ""
+
+    deck = new_deck()
+    random.shuffle(deck)
+
+    players = [[deck.pop(), deck.pop()] for _ in range(4)]
+    community = []
+
+    active = [True] * 4
+
+    check_btn = Button(50, 600, 150, 50, "check", blue)
+    call_btn = Button(250, 600, 150, 50, "call", green)
+    raise_btn = Button(450, 600, 150, 50, "raise", yellow)
+    fold_btn = Button(650, 600, 150, 50, "fold", red)
+    next_btn = Button(950, 600, 180, 50, "next round", gray)
+
+    def draw_card(card, x, y):
+        rect = pygame.Rect(x, y, 70, 100)
+
+        pygame.draw.rect(screen, white, rect)
+        pygame.draw.rect(screen, black, rect, 2)
+
+        txt = font.render(card_str(card), True, black)
+        screen.blit(txt, (x + 10, y + 35))
+
+    def draw_text(text, x, y, color=white, big=False):
+        current_font = big_font if big else font
+        img = current_font.render(text, True, color)
+        screen.blit(img, (x, y))
+
+    def draw_table():
+        screen.fill(green)
+
+        draw_text(f"Pot: {pot}", 540, 40, yellow, True)
+
+        draw_text("Community Cards", 460, 120)
+
+        for i, card in enumerate(community):
+            draw_card(card, 420 + i * 90, 170)
+
+        draw_text("Your Hand", 70, 420)
+
+        for i, card in enumerate(players[0]):
+            draw_card(card, 70 + i * 90, 470)
+
+        for i in range(1, 4):
+            draw_text(f"AI {i} Chips: {chips[i]}", 850, 100 + i * 80)
+
+        draw_text(f"Your Chips: {chips[0]}", 50, 40)
+
+        draw_text(message, 50, 540)
+
+        check_btn.draw()
+        call_btn.draw()
+        raise_btn.draw()
+        fold_btn.draw()
+        next_btn.draw()
+
+    def ai_turn():
+        global pot
+        global message
+
+        for i in range(1, 4):
             if not active[i]:
                 continue
-            to_call=current_bet-bets[i]
-            if i==0:
-                clear_screen()
-                print(f"\nYour turn")
-                print(f"Your cards: {' '.join(card_str(c) for c in players[i])}")
-                if community:
-                    print(f"Community cards: {' '.join(card_str(c) for c in community)}")
-                else:
-                    print("Community cards: None yet")
-                print(f"Pot: {pot} | Your chips: {chips[0]}")
-                print(f"Current bet: {current_bet}\nTo call: {to_call}\n")
-                if ai_moves:
-                    print("AI moves so far this round:")
-                    for move in ai_moves:
-                        print(move)
-                while True:
-                    action=input("check, call, raise, fold: ").lower()
-                    if action=="fold":
-                        active[i]=False
-                        remaining=next((j for j,a in enumerate(active) if a),None)
-                        if remaining is not None:
-                            chips[remaining]+=pot
-                            print("You fold")
-                            print(f"Player {remaining+1} wins the pot")
-                        return pot
-                    elif action=="raise":
-                        if chips[i]>=to_call+10:
-                            chips[i]-=to_call+10
-                            bets[i]+=to_call+10
-                            pot+=to_call+10
-                            current_bet+=10
-                            changed=True
-                            print(f"You raise to {current_bet}")
-                            break
-                        else:
-                            print("Not enough chips to raise. You must call or fold.")
-                            continue
-                    elif action=="call" and to_call>0:
-                        if chips[i]>=to_call:
-                            chips[i]-=to_call
-                            bets[i]+=to_call
-                            pot+=to_call
-                            print("You call")
-                            break
-                        else:
-                            print("Not enough chips to call. You must fold.")
-                            continue
-                    elif action=="check" and to_call==0:
-                        print("You check")
-                        break
-                    else:
-                        print("Invalid action. Try again.")
-                        continue
-            else:
-                position=i
-                action,amount=ai_action(i,players[i],community,chips,current_bet,to_call,pot,position)
-                if action=='fold':
-                    active[i]=False
-                    move=f"Player {i+1} folds"
-                    ai_moves.append(move)
-                elif action=='call':
-                    chips[i]-=amount
-                    bets[i]+=amount
-                    pot+=amount
-                    move=f"Player {i+1} calls"
-                    ai_moves.append(move)
-                elif action=='raise':
-                    total_raise=to_call+amount
-                    if total_raise>chips[i]:
-                        total_raise=chips[i]
-                    chips[i]-=total_raise
-                    bets[i]+=total_raise
-                    pot+=total_raise
-                    current_bet=max(current_bet,bets[i])
-                    changed=True
-                    move=f"Player {i+1} raises to {current_bet}"
-                    ai_moves.append(move)
-                print(move)
-                time.sleep(1)
-        if all(not active[i] or bets[i]==current_bet for i in range(len(players))):
-            break
-    return pot
 
-def play():
-    chips=[100]*4
-    dealer=0
-    while sum(c>0 for c in chips)>1:
-        clear_screen()
-        print(f"--- New Hand ---")
-        deck=new_deck()
-        random.shuffle(deck)
-        players=[[deck.pop(),deck.pop()] for _ in range(4)]
-        active=[chips[i]>0 for i in range(4)]
-        pot=0
-        community=[]
-        starting_bet=5
+            action = random.choice(["call", "raise", "fold"])
+
+            if action == "fold":
+                active[i] = False
+                message = f"AI {i} folds"
+
+            elif action == "call":
+                bet = 5
+                chips[i] -= bet
+                pot += bet
+                message = f"AI {i} calls"
+
+            elif action == "raise":
+                bet = 10
+                chips[i] -= bet
+                pot += bet
+                message = f"AI {i} raises"
+
+    stage = 0
+
+    def next_round(stage, community, deck, pot, message):
+
+        if stage == 0:
+            community.extend([deck.pop(), deck.pop(), deck.pop()])
+            message = "flop dealt"
+
+        elif stage == 1:
+            community.append(deck.pop())
+            message = "turn dealt"
+
+        elif stage == 2:
+            community.append(deck.pop())
+            message = "river dealt"
+
+        elif stage == 3:
+            showdown()
+
+        stage += 1
+
+    def showdown():
+        global message
+        global pot
+
+        results = {}
+
         for i in range(4):
             if active[i]:
-                chips[i]-=starting_bet
-                pot+=starting_bet
-        print(f"Your hole cards: {' '.join(card_str(c) for c in players[0])}")
-        print(f"Automatic starting bet of {starting_bet} chips from each player. Pot is now {pot}.")
+                results[i] = best_hand(players[i] + community)
 
-        pot=betting_round(players,active,chips,pot,community)
-        if sum(active)==1:
-            winner=next((i for i,a in enumerate(active) if a),None)
-            if winner is not None:
-                chips[winner]+=pot
-                print(f"Player {winner+1} wins the pot")
-            if input("Start a new hand? (y/n): ").lower()!='y':
-                break
-            continue
+        winner = max(results, key = lambda x: results[x])
 
-        community=[deck.pop() for _ in range(3)]
-        print(f"Flop: {' '.join(card_str(c) for c in community)}")
-        pot=betting_round(players,active,chips,pot,community)
-        if sum(active)==1:
-            winner=next((i for i,a in enumerate(active) if a),None)
-            if winner is not None:
-                chips[winner]+=pot
-                print(f"Player {winner+1} wins the pot")
-            if input("Start a new hand? (y/n): ").lower()!='y':
-                break
-            continue
+        chips[winner] += pot
 
-        community.append(deck.pop())
-        print(f"Turn: {card_str(community[-1])}")
-        pot=betting_round(players,active,chips,pot,community)
-        if sum(active)==1:
-            winner=next((i for i,a in enumerate(active) if a),None)
-            if winner is not None:
-                chips[winner]+=pot
-                print(f"Player {winner+1} wins the pot")
-            if input("Start a new hand? (y/n): ").lower()!='y':
-                break
-            continue
+        if winner == 0:
+            message = "you win the pot"
+        else:
+            message = f"AI {winner} wins the pot"
 
-        community.append(deck.pop())
-        print(f"River: {card_str(community[-1])}")
-        pot=betting_round(players,active,chips,pot,community)
-        if sum(active)==1:
-            winner=next((i for i,a in enumerate(active) if a),None)
-            if winner is not None:
-                chips[winner]+=pot
-                print(f"Player {winner+1} wins the pot")
-            if input("Start a new hand? (y/n): ").lower()!='y':
-                break
-            continue
+        pot = 0
 
-        results={}
-        for i in range(4):
-            if active[i]:
-                results[i]=best_hand(players[i]+community)
-        if results:
-            winner=max(results,key=lambda k: results[k])
-            chips[winner]+=pot
-            print(f"Player {winner+1} wins the pot")
-        print("Current chip counts:")
-        for i,c in enumerate(chips):
-            print(f"Player {i+1}: {c}")
-        if input("Start a new hand? (y/n): ").lower()!='y':
-            break
-        dealer=(dealer+1)%4
-    winner=max(range(4),key=lambda i: chips[i])
-    print(f"Game over! Player {winner+1} wins with {chips[winner]} chips.")
+    running = True
 
-play()
+    while running:
+        clock.tick(60)
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                running = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+
+                if check_btn.clicked(pos):
+                    message = "you check"
+                    ai_turn()
+
+                elif call_btn.clicked(pos):
+                    chips[0] -= 5
+                    pot += 5
+                    message = "you call"
+                    ai_turn()
+
+                elif raise_btn.clicked(pos):
+                    chips[0] -= 10
+                    pot += 10
+                    message = "you raise"
+                    ai_turn()
+
+                elif fold_btn.clicked(pos):
+                    active[0] = False
+                    message = "you folded"
+
+                elif next_btn.clicked(pos):
+                    next_round(stage, community, deck, pot, message)
+
+        draw_table()
+
+        pygame.display.flip()
+
+    pygame.quit()
+    sys.exit()

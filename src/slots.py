@@ -1,131 +1,152 @@
-#DJ, 1st, Slots Game
-
-# player money = player money in csv
-
-# Define the symbols
-    # C, W, L, A, S
-
-# Symbol Multiplier Function
-    # If symbol == C
-        # Multiplier = 3
-    # If symbol == W
-        # Multiplier = 4
-    # If symbol == L
-        # Multiplier = 5
-    # If symbol == A
-        # Multiplier = 10
-    # If symbol == S
-        # Multiplier = 20
-
-# Spin Grid Function
-    # Randomize each slot on the slot machine to a random symbol
-
-# Get Payout Function
-    # If three of the same symbol in a row or diagonal
-        # Get the multiplier of the row
-
-    # Add bet x multiplier to the player money amount
-
-# Menu Function
-    # Get user bet 
-    # Spin Grid Function
-    # Get Payout Function
-    # Ask user if they want to play again
-
-# Menu Function
+import pygame
 import random
-import time as t
-import os
+import time
+from classes import *
 
-def spin_grid():
-    symbols = ['C', 'W', 'L', 'A', 'S']
-    return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
 
-def print_grid(grid):
-    print("*************")
-    for row in grid:
-        print("  ", " | ".join(row))
-    print("*************")
+def slots_main():
+    def spin_grid():
+        symbols = ['c', 'w', 'l', 'a', 's']
+        return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
 
-def get_payout(grid, bet):
-    payout = 0
+    def symbol_multiplier(symbol):
+        return {'c':1, 'w':2, 'l':5, 'a':10, 's':20}.get(symbol, 0)
 
-    for row in grid:
-        if row[0] == row[1] == row[2]:
-            payout += symbol_multiplier(row[0]) * bet
+    def get_payout(grid, bet):
+        payout = 0
 
-    if grid[0][0] == grid[1][1] == grid[2][2]:
-        payout += symbol_multiplier(grid[0][0]) * bet
-    if grid[0][2] == grid[1][1] == grid[2][0]:
-        payout += symbol_multiplier(grid[0][2]) * bet
+        for row in grid:
+            if row[0] == row[1] == row[2]:
+                payout += symbol_multiplier(row[0]) * bet
 
-    return payout
+        if grid[0][0] == grid[1][1] == grid[2][2]:
+            payout += symbol_multiplier(grid[0][0]) * bet
 
-def symbol_multiplier(symbol):
-    if symbol == 'C':
-        return 3
-    elif symbol == 'W':
-        return 4
-    elif symbol == 'L':
-        return 5
-    elif symbol == 'A':
-        return 10
-    elif symbol == 'S':
-        return 20
-    return 0
+        if grid[0][2] == grid[1][1] == grid[2][0]:
+            payout += symbol_multiplier(grid[0][2]) * bet
 
-def main():
+        return payout
+
+
+
+    pygame.init()
+    width, height = 1280, 1020
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("slot machine")
+
+    font = pygame.font.Font(None, 30)
+
+
+    bg = pygame.image.load("docs/background.png").convert()
+    bg = pygame.transform.scale(bg, (width, height))
+
+
+    cell_size = 80
+    gap = 20
+    grid_x = 190
+    grid_y = 335
+
+
+    symbols = ['c', 'w', 'l', 'a', 's']
+    symbol_images = {}
+
+    for s in symbols:
+        img = pygame.image.load(f"docs/{s}.png").convert_alpha()
+        img = pygame.transform.scale(img, (cell_size, cell_size))
+        symbol_images[s] = img
+
+
     money = 100
-    print("   Welcome to slots!")
-    print("Symbols: C W L A S")
+    grid = spin_grid()
+    bet = 10
+    min_bet = 1
+    message = None
 
-    while money > 0:
-        print(f"\nCurrent money: ${money}")
+
+    def draw():
+        screen.blit(bg, (0, 0))
+
         
-        bet = input("Place your bet amount: $")
+        for r in range(3):
+            for c in range(3):
+                symbol = grid[r][c]
+
+                x = (grid_x + c * (cell_size + gap)) * 2
+                y = (grid_y + r * (cell_size + gap))
+
+                screen.blit(symbol_images[symbol], (x, y))
+
         
-        if not bet.isdigit():
-            print("Please enter a valid input.")
-            continue
+        money_text = font.render(f"${money}", True, (255, 255, 255))
+        screen.blit(money_text, (10, 10))
 
-        bet = int(bet)
+        bet_text = font.render(f"bet: ${bet}", True, (255, 255, 255))
+        screen.blit(bet_text, (10, 80))
 
-        if bet > money:
-            print("You don't got that much.")
-            continue
-        elif bet <= 0:
-            print("Bet must be greater than 0.")
-            continue
+        msg_text = font.render(message, True, (255, 255, 255))
+        screen.blit(msg_text, (10, height - 40))
 
-        money -= bet
-        print("\nSpinning...\n")
-        t.sleep(1)
-        grid = spin_grid()
-        print_grid(grid)
+        collision_test = Button(x = 40, y = 260, width = 230, height = 550, color = "red", hover_color = "green", text = None)
+        collision_test.draw(screen)
 
-        payout = get_payout(grid, bet)
-        t.sleep(1)
-        if payout > 0:
-            print(f"You won ${payout}!")
-            money += payout
-        else:
-            print("You lost.")
 
-        if money == 0:
-            print("\nNo more money!")
-            break
 
-        play_again = input("Do you want to spin again? (Y/N): ").upper()
-        if play_again != 'Y':
-            break
+    running = True
+    clock = pygame.time.Clock()
 
-    print(f"Game over!")
-
-def real_main():
-    while True:
-        main()
-        choice = input("Do you want to play again? Y/N:\n").upper()
-        if choice != "Y":
-            break
+    while running:
+        max_bet = money
         
-real_main()
+        screen.fill((0, 0, 0))
+        
+        draw()
+        pygame.display.flip()
+        time.sleep(0.5)
+
+        bg = pygame.image.load("docs/background.png").convert()
+        bg = pygame.transform.scale(bg, (width, height))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+            
+                if event.key == pygame.K_UP:
+                    if bet < max_bet and bet < money:
+                        bet += 1
+                
+                if event.key == pygame.K_RIGHT:
+                    if bet < max_bet and bet < money:
+                        bet += 10
+
+                if event.key == pygame.K_LEFT:
+                    if bet > min_bet:
+                        bet -= 10
+
+                if event.key == pygame.K_DOWN:
+                    if bet > min_bet:
+                        bet -= 1
+
+
+                if event.key == pygame.K_SPACE:
+                    if money >= bet and bet > 0:
+                        bg = pygame.image.load("docs/background(2).png").convert()
+                        bg = pygame.transform.scale(bg, (width, height))
+                        money -= bet
+                        grid = spin_grid()
+                        payout = get_payout(grid, bet)
+
+                        if payout > 0:
+                            money += payout
+                            message = f"you won ${payout}!"
+                        else:
+                            message = "you lost!"
+                    else:
+                        message = "no money left!"
+
+        clock.tick(60)
+
+    pygame.quit()
