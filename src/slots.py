@@ -3,8 +3,8 @@ import random
 import time
 from classes import *
 
-
-def slots_main():
+collision_test = None
+def slots_main(collision_test):
     def spin_grid():
         symbols = ['c', 'w', 'l', 'a', 's']
         return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
@@ -37,7 +37,7 @@ def slots_main():
     font = pygame.font.Font(None, 30)
 
 
-    bg = pygame.image.load("docs/background.png").convert()
+    bg = pygame.image.load("docs/minion_1.jpg").convert()
     bg = pygame.transform.scale(bg, (width, height))
 
 
@@ -86,8 +86,9 @@ def slots_main():
         msg_text = font.render(message, True, (255, 255, 255))
         screen.blit(msg_text, (10, height - 40))
 
-        collision_test = Button(x = 40, y = 260, width = 230, height = 550, color = "red", hover_color = "green", text = None)
+        collision_test = CollisionButton(x = 40, y = 260, width = 230, height = 550, color = "red", hover_color = "green", text = None)
         collision_test.draw(screen)
+        return collision_test
 
 
 
@@ -131,22 +132,25 @@ def slots_main():
                         bet -= 1
 
 
-                if event.key == pygame.K_SPACE:
-                    if money >= bet and bet > 0:
-                        bg = pygame.image.load("docs/background(2).png").convert()
-                        bg = pygame.transform.scale(bg, (width, height))
-                        money -= bet
-                        grid = spin_grid()
-                        payout = get_payout(grid, bet)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if collision_test.collidepoint(event.pos):
+                        if money >= bet and bet > 0:
+                            bg = pygame.image.load("docs/background(2).png").convert()
+                            bg = pygame.transform.scale(bg, (width, height))
+                            money -= bet
+                            grid = spin_grid()
+                            payout = get_payout(grid, bet)
 
-                        if payout > 0:
-                            money += payout
-                            message = f"you won ${payout}!"
+                            if payout > 0:
+                                money += payout
+                                message = f"you won ${payout}!"
+                            else:
+                                message = "you lost!"
                         else:
-                            message = "you lost!"
-                    else:
-                        message = "no money left!"
+                            message = "no money left!"
 
         clock.tick(60)
 
     pygame.quit()
+
+slots_main(collision_test)
