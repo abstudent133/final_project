@@ -73,10 +73,7 @@ def login(screen, users_dict, action):
                     if event.key == pygame.K_RETURN:
 
                         #create dictionary entry
-                        users_dict[username] = {
-                            "password": hash_pass(password),
-                            "money": 100
-                        }
+                        users_dict[username] = {"password":hash_pass("password"), "money": 100,"avatar_base": "docs\\trex.png","inventory":{}}
 
                         #return good
                         return users_dict
@@ -203,7 +200,8 @@ def login_ui(user_dict):
     #}
 #}    
 
-users = {"user":{"password":hash_pass("password")}}
-print(users)
-users = login_ui(users)
-print(users)
+#users = {"user":{"password":hash_pass("password"), "avatar_color": "docs\\trex.png","avatar_hat":{}}}
+
+#print(users)
+#users = login_ui(users)
+#print(users)
