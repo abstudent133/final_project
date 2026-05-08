@@ -28,7 +28,7 @@ def main():
     #while true
     while True:
         #call login function
-        move_on = login()
+        move_on = login_ui()
         #if it returns quit
         if move_on == "quit":
             #show a message about leaving
