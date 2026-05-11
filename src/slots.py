@@ -37,7 +37,7 @@ def slots_main(collision_test):
     font = pygame.font.Font(None, 30)
 
 
-    bg = pygame.image.load("docs/minion_1.jpg").convert()
+    bg = pygame.image.load("docs/minion_3.jpg").convert()
     bg = pygame.transform.scale(bg, (width, height))
 
 
@@ -152,5 +152,3 @@ def slots_main(collision_test):
         clock.tick(60)
 
     pygame.quit()
-
-slots_main(collision_test)
