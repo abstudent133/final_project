@@ -199,7 +199,3 @@ def work(money, customer_list, customer_dict):
             money += 5
     # returns the days earnings
     return money
-
-
-money = 0
-print(work(money, customers_list_format, customers))
