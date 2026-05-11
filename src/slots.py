@@ -37,7 +37,7 @@ def slots_main(collision_test):
     font = pygame.font.Font(None, 30)
 
 
-    bg = pygame.image.load("docs/minion_3.jpg").convert()
+    bg = pygame.image.load("docs/minion_1.jpg").convert()
     bg = pygame.transform.scale(bg, (width, height))
 
 
@@ -62,6 +62,8 @@ def slots_main(collision_test):
     min_bet = 1
     message = None
 
+    def clicked(self, pos):
+        return self.rect.collidepoint(pos)
 
     def draw():
         screen.blit(bg, (0, 0))
@@ -133,7 +135,8 @@ def slots_main(collision_test):
 
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if collision_test.collidepoint(event.pos):
+                    pos = pygame.mouse.get_pos()
+                    if collision_test.clicked(pos):
                         if money >= bet and bet > 0:
                             bg = pygame.image.load("docs/background(2).png").convert()
                             bg = pygame.transform.scale(bg, (width, height))
@@ -152,3 +155,5 @@ def slots_main(collision_test):
         clock.tick(60)
 
     pygame.quit()
+
+slots_main(collision_test)
