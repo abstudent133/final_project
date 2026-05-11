@@ -11,7 +11,6 @@ def save_df(dictionary, file_path):
     # loops over them and adds them all to a list
     for i in range(len(keys)):
         row_data.append([keys[i], values[i]])
-        print(row_data)
     # converts the list to a dataframe
     df = pd.DataFrame(row_data, columns = ["names", "info"])
     # adds dataframe to the csv
@@ -39,10 +38,5 @@ def load_df(file_path):
     #}
 #}
 
-test = {
-    "one" : 1,
-    "two" : 2,
-    "three" : 3,
-    "four" : 4,
-    "five" : 5
-}
+
+print(load_df('docs/testtts.csv'))
