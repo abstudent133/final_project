@@ -28,15 +28,17 @@ def main():
     #while true
     while True:
         #call login function
-        move_on = login_ui()
+        dictionary = load_df("docs/users.csv")
+        move_on = login_ui(dictionary)
         #if it returns quit
         if move_on == "quit":
             #show a message about leaving
             print("Thanks for using Dino Casino!")
             #break
-            break
+            break 
         #else:
         else:
+            dictionary = move_on
             #while true
             while True:
                 #choice is them choosing a button of the action they want to complete
@@ -70,6 +72,7 @@ def main():
                     pass
                 #else if they choose exit
                 elif choice == "6":
+                    save_df(dictionary, "docs/users.csv")
                     #break
                     break
 
