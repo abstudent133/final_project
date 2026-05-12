@@ -23,7 +23,7 @@ def blackjack_main():
     clock = pygame.time.Clock()
 
     def create_deck():
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14] * 4
+        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14] * 4
         random.shuffle(deck)
         return deck
 
@@ -243,3 +243,4 @@ def blackjack_main():
 
     pygame.quit()
     sys.exit()
+blackjack_main()
