@@ -161,9 +161,8 @@ def poker_main():
         fold_btn.draw()
         next_btn.draw()
 
-    def ai_turn():
-        global pot
-        global message
+    def ai_turn(pot, message):
+
 
         for i in range(1, 4):
             if not active[i]:
@@ -244,19 +243,19 @@ def poker_main():
 
                 if check_btn.clicked(pos):
                     message = "you check"
-                    ai_turn()
+                    ai_turn(pot, message)
 
                 elif call_btn.clicked(pos):
                     chips[0] -= 5
                     pot += 5
                     message = "you call"
-                    ai_turn()
+                    ai_turn(pot, message)
 
                 elif raise_btn.clicked(pos):
                     chips[0] -= 10
                     pot += 10
                     message = "you raise"
-                    ai_turn()
+                    ai_turn(pot, message)
 
                 elif fold_btn.clicked(pos):
                     active[0] = False
@@ -265,9 +264,16 @@ def poker_main():
                 elif next_btn.clicked(pos):
                     next_round(stage, community, deck, pot, message)
 
+                if chips[0] < 0:
+                    print("out of money")
+                    pygame.quit()
+                    sys.exit()
+
         draw_table()
 
         pygame.display.flip()
 
     pygame.quit()
     sys.exit()
+
+poker_main()
