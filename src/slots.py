@@ -3,69 +3,57 @@ import random
 import time
 from classes import *
 
-collision_test = None
-def slots_main(collision_test):
-    def spin_grid():
-        symbols = ['c', 'w', 'l', 'a', 's']
-        return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
+pygame.init()
 
-    def symbol_multiplier(symbol):
-        return {'c':1, 'w':2, 'l':5, 'a':10, 's':20}.get(symbol, 0)
+width, height = 1280, 1020
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("slot machine")
 
-    def get_payout(grid, bet):
-        payout = 0
+font = pygame.font.Font(None, 30)
 
-        for row in grid:
-            if row[0] == row[1] == row[2]:
-                payout += symbol_multiplier(row[0]) * bet
+symbols = ['egg', 'footprint', 'shell', 'bone', 'comet']
+symbol_images = {}
 
-        if grid[0][0] == grid[1][1] == grid[2][2]:
-            payout += symbol_multiplier(grid[0][0]) * bet
+def spin_grid():
+    symbols = ['egg', 'footprint', 'shell', 'bone', 'comet']
+    return [[random.choice(symbols) for _ in range(3)] for _ in range(3)]
 
-        if grid[0][2] == grid[1][1] == grid[2][0]:
-            payout += symbol_multiplier(grid[0][2]) * bet
+def symbol_multiplier(symbol):
+    return {'egg':1, 'footprint':2, 'shell':5, 'bone':10, 'comet':20}.get(symbol, 0)
 
-        return payout
+def get_payout(grid, bet):
+    payout = 0
 
+    for row in grid:
+        if row[0] == row[1] == row[2]:
+            payout += symbol_multiplier(row[0]) * bet
 
+    if grid[0][0] == grid[1][1] == grid[2][2]:
+        payout += symbol_multiplier(grid[0][0]) * bet
 
-    pygame.init()
-    width, height = 1280, 1020
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("slot machine")
+    if grid[0][2] == grid[1][1] == grid[2][0]:
+        payout += symbol_multiplier(grid[0][2]) * bet
 
-    font = pygame.font.Font(None, 30)
+    return payout
 
+cell_size = 80
+gap = 20
+grid_x = 190
+grid_y = 335
 
-    bg = pygame.image.load("docs/background.png").convert()
-    bg = pygame.transform.scale(bg, (width, height))
+money = 100
+grid = spin_grid()
+bet = 10
+min_bet = 1
+message = None
+max_bet = money
 
+for s in symbols:
+    img = pygame.image.load(f"docs/slots_icons/{s}.png").convert_alpha()
+    img = pygame.transform.scale(img, (cell_size, cell_size))
+    symbol_images[s] = img
 
-    cell_size = 80
-    gap = 20
-    grid_x = 190
-    grid_y = 335
-
-
-    symbols = ['c', 'w', 'l', 'a', 's']
-    symbol_images = {}
-
-    for s in symbols:
-        img = pygame.image.load(f"docs/{s}.png").convert_alpha()
-        img = pygame.transform.scale(img, (cell_size, cell_size))
-        symbol_images[s] = img
-
-
-    money = 100
-    grid = spin_grid()
-    bet = 10
-    min_bet = 1
-    message = None
-
-    def clicked(self, pos):
-        return self.rect.collidepoint(pos)
-
-    def draw():
+def draw():
         screen.blit(bg, (0, 0))
 
         
@@ -88,12 +76,17 @@ def slots_main(collision_test):
         msg_text = font.render(message, True, (255, 255, 255))
         screen.blit(msg_text, (10, height - 40))
 
-        collision_test = CollisionButton(x = 40, y = 260, width = 230, height = 550, color = "red", hover_color = "green", text = None)
-        collision_test.draw(screen)
-        return collision_test
+collision_test = CollisionButton(x = 40, y = 260, width = 230, height = 550, color = "red", hover_color = "green", text = None)
+collision_test.blit(screen)
+
+bg = pygame.image.load("docs/slots_icons/background.png").convert()
+bg = pygame.transform.scale(bg, (width, height))
+
+bg_spin = pygame.image.load("docs/slots_icons/background_2.png").convert()
+bg_spin = pygame.transform.scale(bg, (width, height))
 
 
-
+def slots_main(collision_test, money):
     running = True
     clock = pygame.time.Clock()
 
@@ -105,9 +98,6 @@ def slots_main(collision_test):
         draw()
         pygame.display.flip()
         time.sleep(0.5)
-
-        bg = pygame.image.load("docs/background.png").convert()
-        bg = pygame.transform.scale(bg, (width, height))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -137,13 +127,12 @@ def slots_main(collision_test):
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     if collision_test.clicked(pos):
+                        bg = bg_spin
                         if money >= bet and bet > 0:
-                            bg = pygame.image.load("docs/background(2).png").convert()
-                            bg = pygame.transform.scale(bg, (width, height))
                             money -= bet
                             grid = spin_grid()
                             payout = get_payout(grid, bet)
-
+                            
                             if payout > 0:
                                 money += payout
                                 message = f"you won ${payout}!"
@@ -156,4 +145,4 @@ def slots_main(collision_test):
 
     pygame.quit()
 
-slots_main(collision_test)
+slots_main(collision_test, money)
