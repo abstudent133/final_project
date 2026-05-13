@@ -50,7 +50,7 @@ class Button:
         self.rect = self.img.get_rect(topleft=(x, y))
         
         # Create text surface once in __init__ instead of every frame
-        self.font = pygame.font.SysFont("Impact", 30)
+        self.font = pygame.font.SysFont("Ariel", 30)
         self.text_surf = self.font.render(self.text, True, (255, 255, 255))
         
         # Center text surface directly over the button's screen rect
@@ -131,7 +131,7 @@ class ImageButton:
 #message class
 class Message:
     #initiates all the parameters which are the text, the x and y coordinates, the font(not necesary), the size(not necesary), and the color(not necesary)
-    def __init__(self, text,x,y,font="Ariel",size=30,color=(255,255,255)):
+    def __init__(self, text,x,y,font="Arial",size=30,color=(255,255,255)):
         self.txt = text
         self.font = font
         self.size = size
@@ -141,7 +141,7 @@ class Message:
 
     def draw(self, screen):
         font = pygame.font.SysFont(self.font,self.size)
-        text_surface = font.render(self.txt,True,self.color)
+        text_surface = font.render(str(self.txt),True,self.color)
         screen.blit(text_surface,(self.x,self.y))
 
 #class for text inputs

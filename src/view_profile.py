@@ -1,17 +1,10 @@
 # MH 1st view profile functions
 import pygame
 import sys
-from csv_management import *
 from classes import *
+from csv_management import *
 # display avatar:
-def display_avatar(user, screen):
-    # load avatar base
-    # loop over their inventory, if an item is equipped load it
-    for item in user["inventory"]:
-        if item.value == "equipped":
-            equipped_item = pygame.image.load(user["inventory"][item]).convert_alpha()
-    screen.blit(avatar, (100, 100))
-    screen.blit(equipped_item, (100, 100))
+
 
 def overlay_images(screen, base_image, top_image, base_x, base_y,top_x, top_y):
     #Get rectangles for positioning
@@ -51,11 +44,12 @@ def display_info(user):
 def display_profile(user):
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
-    avatar = pygame.image.load("docs/trex.png").convert_alpha() 
-    equipped_item = None  
-    for item in user["inventory"]:
-        if item.value == "equipped":
-            equipped_item = pygame.image.load(user["inventory"][item]).convert_alpha()
+    avatar = pygame.image.load("docs/characters/trex.png").convert_alpha() 
+    equipped_item = None
+    hats = load_df("docs\CSVs\hats.csv")
+    for item in user["inventory"].keys():
+        if user['inventory'][item] == "equipped":
+            equipped_item = pygame.image.load(hats[item]).convert_alpha()
     user_name = Message(user["username"],200,150)
     money = Message(user["money"],300,150)
     title = Message("User Profile",500,50,size=50)
@@ -105,3 +99,8 @@ def load_hats():
     # asks the user if they want to purchase the item
     # if they do save it to their inventory and subtract it's price from their money total, then return the updated dictionary
     # if they don't go back to the main shop
+user = {"username": "username",
+        "avatar base": "docs/characters/trex.png",
+        "money": 100,
+        "inventory": {"conductor": "equipped"}}
+display_profile(user)
