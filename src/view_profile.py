@@ -2,16 +2,31 @@
 import pygame
 import sys
 from csv_management import *
+from classes import *
 # display avatar:
-def display_avatar(user, window):
+def display_avatar(user, screen):
     # load avatar base
-    avatar = pygame.image.load(user["avatar base"]).convert_alpha()
     # loop over their inventory, if an item is equipped load it
     for item in user["inventory"]:
         if item.value == "equipped":
             equipped_item = pygame.image.load(user["inventory"][item]).convert_alpha()
-    window.blit(avatar, (100, 100))
-    window.blit(equipped_item, (100, 100))
+    screen.blit(avatar, (100, 100))
+    screen.blit(equipped_item, (100, 100))
+
+def overlay_images(screen, base_image, top_image, base_x, base_y,top_x, top_y):
+    #Get rectangles for positioning
+    base_rect = base_image.get_rect()
+    top_rect = top_image.get_rect()
+    
+    #Position the base image on the screen
+    base_rect.topleft = (base_x, base_y)
+    
+    #Center the top image rectangle over the base image rectangle
+    top_rect.topleft = (top_x, top_y)
+    
+    #Draw both layers onto the display surface
+    screen.blit(base_image, base_rect)
+    screen.blit(top_image, top_rect)
 
 # display inventory:
 def display_inventory(user):
@@ -34,12 +49,37 @@ def display_info(user):
 
 # display profile:
 def display_profile(user):
+    pygame.init()
+    screen = pygame.display.set_mode((1280, 720))
+    avatar = pygame.image.load("docs/trex.png").convert_alpha() 
+    equipped_item = None  
+    for item in user["inventory"]:
+        if item.value == "equipped":
+            equipped_item = pygame.image.load(user["inventory"][item]).convert_alpha()
+    user_name = Message(user["username"],200,150)
+    money = Message(user["money"],300,150)
+    title = Message("User Profile",500,50,size=50)
+    running = True
+    while running:
+        screen.fill((0,0,0))
+        #if quit button clicked
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            
+        title.draw(screen)
+        user_name.draw(screen)
+        money.draw(screen)
+        overlay_images(screen,avatar,equipped_item,50,150,60,200)
+        pygame.display.flip()
+    pygame.quit
+        
+            
+
+            
     # runs display avatar
-    display_avatar(user)
     # runs display inventory
-    display_inventory(user)
     # runs display info
-    display_info(user)
 
 # load buttons
 def load_hats():
