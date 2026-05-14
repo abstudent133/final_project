@@ -37,3 +37,6 @@ def load_df(file_path):
         # inventory = {item : equipped, item_2 : unequipped}
     #}
 #}
+
+
+print(load_df('docs/testtts.csv'))
