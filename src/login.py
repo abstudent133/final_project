@@ -75,7 +75,7 @@ def login(screen, users_dict, action):
 
                         #create dictionary entry
                         users_dict[username] = {"password":hash_pass("password"), "money": 100,"avatar_base": "docs/characters/trex.png","inventory":{}}
-                        save_df(users_dict,"docs\CSVs\users.csv")
+                        save_df(users_dict,"docs/CSVs/users.csv")
                         #return good
                         return username
 
@@ -150,9 +150,9 @@ def login_ui(user_dict):
 
     running = True
 
-    login_button = Button(200,200,"docs/small_button.png",scale=.25,text="Login")
-    sign_up_button = Button(400,200,"docs/mid_button.png",scale=.25,text="Sign Up")
-    exit_button = Button(600,200,"docs/small_button.png",scale=.25,text="Exit")
+    login_button = Button(200,200,"docs/buttons/small_button.png",scale=.25,text="Login")
+    sign_up_button = Button(400,200,"docs/buttons/mid_button.png",scale=.25,text="Sign Up")
+    exit_button = Button(600,200,"docs/buttons/small_button.png",scale=.25,text="Exit")
 
     #start loop
     while running:

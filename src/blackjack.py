@@ -299,7 +299,6 @@ def blackjack_main(users, username):
         pygame.display.flip()
     users[username]["money"] = money
     pygame.quit()
-    return users
     sys.exit()
-
-blackjack_main()
+    return users
+    
