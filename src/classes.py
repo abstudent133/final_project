@@ -78,19 +78,15 @@ class CollisionButton:
         self.hover_color = hover_color
         self.font = pygame.font.SysFont("Arial", 30)
         self.text_surf = self.font.render(self.text, True, (255, 255, 255))
-        self.text_rect = self.text_surf.get_rect(center = self.rect.center)
+        self.text_rect = self.text_surf.get_rect(center=self.rect.center)
 
     def draw(self, screen):
-        # Hover effect: Change color if mouse is over button
-        mouse_pos = pygame.mouse.get_pos()
-        current_color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.color
-        pygame.draw.rect(screen, current_color, self.rect)
-        text_surf = self.font.render(self.text, True, (255, 255, 255))
-        text_rect = text_surf.get_rect(center=self.rect.center)
-        screen.blit(text_surf, text_rect)
-        
+        surface = pygame.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        surface.fill((0, 0, 0, 0))
+        screen.blit(surface, (self.rect.x, self.rect.y))
+
     def is_clicked(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 return True
         return False
