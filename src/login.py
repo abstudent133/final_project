@@ -74,7 +74,7 @@ def login(screen, users_dict, action):
                     if event.key == pygame.K_RETURN:
 
                         #create dictionary entry
-                        users_dict[username] = {"password":hash_pass("password"), "money": 100,"avatar_base": "docs\\trex.png","inventory":{}}
+                        users_dict[username] = {"password":hash_pass("password"), "money": 100,"avatar_base": "docs/characters/trex.png","inventory":{}}
                         save_df(users_dict,"docs\CSVs\users.csv")
                         #return good
                         return username
