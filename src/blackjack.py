@@ -273,6 +273,7 @@ def blackjack_main():
                     if event.key == pygame.K_DOWN:
                         if bet - 1 >= min_bet:
                             bet -= 1
+                            
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 pos = pygame.mouse.get_pos()

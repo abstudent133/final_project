@@ -139,7 +139,7 @@ def poker_main():
         return amount
 
     def draw_card(card, x, y):
-        r = pygame.Rect(x, ys, 70, 100)
+        r = pygame.Rect(x, y, 70, 100)
         pygame.draw.rect(screen, white, r)
         pygame.draw.rect(screen, black, r, 2)
         t = font.render(card_str(card), True, black)
@@ -300,6 +300,8 @@ def poker_main():
         fold.draw()
 
         pygame.display.flip()
+
+    money = players[0]["chips"]
 
     pygame.quit()
     sys.exit()
