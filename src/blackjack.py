@@ -2,217 +2,250 @@ import pygame
 import random
 import sys
 
-def blackjack_main():
-    pygame.init()
+pygame.init()
 
-    width, height = 1000, 700
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("Blackjack")
+width, height = 1000, 700
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Blackjack")
 
-    font = pygame.font.SysFont("arial", 28)
-    big_font = pygame.font.SysFont("arial", 42)
+font = pygame.font.SysFont("arial", 28)
+big_font = pygame.font.SysFont("arial", 42)
 
-    green = (20, 120, 20)
-    white = (255, 255, 255)
-    black = (0, 0, 0)
-    red = (200, 50, 50)
-    blue = (50, 100, 200)
-    gray = (180, 180, 180)
-    yellow = (255, 215, 0)
+green = (20, 120, 20)
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (200, 50, 50)
+blue = (50, 100, 200)
+gray = (180, 180, 180)
+yellow = (255, 215, 0)
 
-    clock = pygame.time.Clock()
+clock = pygame.time.Clock()
 
-    def create_deck():
-        deck = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14] * 4
-        random.shuffle(deck)
-        return deck
+money = 100
+min_bet = 1
+bet = 10
 
-    def convert_card(card):
-        if card == 11:
-            return "J"
+def create_deck():
+    deck = []
 
-        if card == 12:
-            return "Q"
+    for _ in range(4):
+        deck.extend([
+            2, 3, 4, 5, 6, 7, 8, 9, 10,
+            "J", "Q", "K", "A"
+        ])
 
-        if card == 13:
-            return "K"
+    random.shuffle(deck)
+    return deck
 
-        if card == 14:
-            return "A"
+def deal_hand(deck, amount=2):
+    hand = []
 
-        return card
+    for _ in range(amount):
+        hand.append(deck.pop())
 
-    def deal_hand(deck, amount=2):
-        hand = []
+    return hand
 
-        for _ in range(amount):
-            hand.append(convert_card(deck.pop()))
+def calculate_total(hand):
+    total = 0
+    aces = 0
 
-        return hand
+    for card in hand:
 
-    def calculate_total(hand):
-        total = 0
-        aces = 0
+        if card in ["J", "Q", "K"]:
+            total += 10
 
-        for card in hand:
-            if card in ["J", "Q", "K"]:
-                total += 10
+        elif card == "A":
+            total += 11
+            aces += 1
 
-            elif card == "A":
-                total += 11
-                aces += 1
+        else:
+            total += card
 
-            else:
-                total += card
+    while total > 21 and aces:
+        total -= 10
+        aces -= 1
 
-        while total > 21 and aces:
-            total -= 10
-            aces -= 1
+    return total
 
-        return total
+def hit(deck, hand):
+    hand.append(deck.pop())
 
-    def hit(deck, hand):
-        hand.append(convert_card(deck.pop()))
+class BetButton:
+    def __init__(self, x, y, w, h, text, color):
+        self.rect = pygame.Rect(x, y, w, h)
+        self.text = text
+        self.color = color
 
-    class Button:
-        def __init__(self, x, y, w, h, text, color):
-            self.rect = pygame.Rect(x, y, w, h)
-            self.text = text
-            self.color = color
+    def draw(self):
+        pygame.draw.rect(screen, self.color, self.rect)
+        pygame.draw.rect(screen, black, self.rect, 3)
 
-        def draw(self):
-            pygame.draw.rect(screen, self.color, self.rect)
-            pygame.draw.rect(screen, black, self.rect, 3)
-
-            txt = font.render(self.text, True, white)
-
-            screen.blit(
-                txt,
-                (
-                    self.rect.x + self.rect.width // 2 - txt.get_width() // 2,
-                    self.rect.y + self.rect.height // 2 - txt.get_height() // 2,
-                ),
-            )
-
-        def clicked(self, pos):
-            return self.rect.collidepoint(pos)
-
-    def draw_card(card, x, y):
-        rect = pygame.Rect(x, y, 80, 120)
-
-        pygame.draw.rect(screen, white, rect)
-        pygame.draw.rect(screen, black, rect, 3)
-
-        txt = big_font.render(str(card), True, black)
+        txt = font.render(self.text, True, white)
 
         screen.blit(
             txt,
             (
-                x + rect.width // 2 - txt.get_width() // 2,
-                y + rect.height // 2 - txt.get_height() // 2,
+                self.rect.x + self.rect.width // 2 - txt.get_width() // 2,
+                self.rect.y + self.rect.height // 2 - txt.get_height() // 2,
             ),
         )
 
-    def draw_text(text, x, y, color=white, big=False):
-        current_font = big_font if big else font
-        img = current_font.render(text, True, color)
-        screen.blit(img, (x, y))
+    def clicked(self, pos):
+        return self.rect.collidepoint(pos)
 
-    def reset_game(state):
+def draw_card(card, x, y):
+    rect = pygame.Rect(x, y, 80, 120)
+
+    pygame.draw.rect(screen, white, rect)
+    pygame.draw.rect(screen, black, rect, 3)
+
+    txt = big_font.render(str(card), True, black)
+
+    screen.blit(
+        txt,
+        (
+            x + rect.width // 2 - txt.get_width() // 2,
+            y + rect.height // 2 - txt.get_height() // 2,
+        ),
+    )
+
+def draw_text(text, x, y, color=white, big=False):
+    current_font = big_font if big else font
+    img = current_font.render(text, True, color)
+    screen.blit(img, (x, y))
+
+def start_new_hand(state):
+
+    if len(state["deck"]) < 15:
         state["deck"] = create_deck()
-        state["player_hand"] = deal_hand(state["deck"])
-        state["dealer_hand"] = deal_hand(state["deck"])
-        state["message"] = ""
-        state["game_over"] = False
 
-    def dealer_turn(state):
-        while calculate_total(state["dealer_hand"]) < 17:
-            hit(state["deck"], state["dealer_hand"])
+    if state["money"] < state["bet"]:
+        state["message"] = "not enough money"
+        return
 
-        player_total = calculate_total(state["player_hand"])
-        dealer_total = calculate_total(state["dealer_hand"])
-
-        if dealer_total > 21:
-            state["message"] = "dealer busted, you win"
-            state["money"] += state["bet"]
-
-        elif player_total > dealer_total:
-            state["message"] = "you win"
-            state["money"] += state["bet"]
-
-        elif player_total < dealer_total:
-            state["message"] = "dealer wins"
-            state["money"] -= state["bet"]
-
-        else:
-            state["message"] = "tie"
-
-        state["game_over"] = True
-
-    def draw_game(state, buttons):
-        screen.fill(green)
-
-        draw_text(f"money: ${state['money']}", 40, 30, yellow, True)
-
-        draw_text("dealer", 100, 100)
-
-        if state["game_over"]:
-            for i, card in enumerate(state["dealer_hand"]):
-                draw_card(card, 100 + i * 100, 150)
-
-            draw_text(
-                f"total: {calculate_total(state['dealer_hand'])}",
-                100,
-                300
-            )
-
-        else:
-            draw_card(state["dealer_hand"][0], 100, 150)
-
-            hidden = pygame.Rect(200, 150, 80, 120)
-            pygame.draw.rect(screen, red, hidden)
-
-        draw_text("player", 100, 380)
-
-        for i, card in enumerate(state["player_hand"]):
-            draw_card(card, 100 + i * 100, 430)
-
-        draw_text(
-            f"total: {calculate_total(state['player_hand'])}",
-            100,
-            560
-        )
-
-        draw_text(state["message"], 560, 220, white, True)
-
-        if not state["game_over"]:
-            buttons["hit"].draw()
-            buttons["stand"].draw()
-
-        buttons["restart"].draw()
-
-    state = {
-        "money": 100,
-        "bet": 10,
-        "deck": create_deck(),
-        "player_hand": [],
-        "dealer_hand": [],
-        "message": "",
-        "game_over": False
-    }
+    state["money"] -= state["bet"]
 
     state["player_hand"] = deal_hand(state["deck"])
     state["dealer_hand"] = deal_hand(state["deck"])
 
-    buttons = {
-        "hit": Button(100, 580, 180, 60, "hit", blue),
-        "stand": Button(330, 580, 180, 60, "stand", red),
-        "restart": Button(700, 580, 200, 60, "new hand", gray)
-    }
+    state["message"] = ""
+    state["game_over"] = False
+
+    player_total = calculate_total(state["player_hand"])
+    dealer_total = calculate_total(state["dealer_hand"])
+
+    if player_total == 21 and dealer_total == 21:
+        state["message"] = "both blackjack"
+        state["money"] += state["bet"]
+        state["game_over"] = True
+
+    elif player_total == 21:
+        state["message"] = "blackjack"
+        state["money"] += int(state["bet"] * 2.5)
+        state["game_over"] = True
+
+    elif dealer_total == 21:
+        state["message"] = "dealer blackjack"
+        state["game_over"] = True
+
+def dealer_turn(state):
+
+    while calculate_total(state["dealer_hand"]) < 17:
+        hit(state["deck"], state["dealer_hand"])
+
+    player_total = calculate_total(state["player_hand"])
+    dealer_total = calculate_total(state["dealer_hand"])
+
+    if dealer_total > 21:
+        state["message"] = "dealer busted"
+        state["money"] += state["bet"] * 2
+
+    elif player_total > dealer_total:
+        state["message"] = "you win"
+        state["money"] += state["bet"] * 2
+
+    elif player_total < dealer_total:
+        state["message"] = "dealer wins"
+
+    else:
+        state["message"] = "push"
+        state["money"] += state["bet"]
+
+    state["game_over"] = True
+
+def draw_game(state, buttons):
+
+    screen.fill(green)
+
+    draw_text(f"money: ${state['money']}", 40, 30, yellow, True)
+    draw_text(f"bet: ${state['bet']}", 40, 80)
+
+    draw_text("dealer", 100, 100)
+
+    if state["game_over"]:
+
+        for i, card in enumerate(state["dealer_hand"]):
+            draw_card(card, 100 + i * 100, 150)
+
+        draw_text(
+            f"total: {calculate_total(state['dealer_hand'])}",
+            100,
+            300
+        )
+
+    else:
+
+        draw_card(state["dealer_hand"][0], 100, 150)
+
+        hidden = pygame.Rect(200, 150, 80, 120)
+        pygame.draw.rect(screen, red, hidden)
+        pygame.draw.rect(screen, black, hidden, 3)
+
+    draw_text("player", 100, 380)
+
+    for i, card in enumerate(state["player_hand"]):
+        draw_card(card, 100 + i * 100, 430)
+
+    draw_text(
+        f"total: {calculate_total(state['player_hand'])}",
+        100,
+        580
+    )
+
+    draw_text(state["message"], 520, 250, white, True)
+
+    if not state["game_over"]:
+        buttons["hit"].draw()
+        buttons["stand"].draw()
+
+    buttons["new_hand"].draw()
+
+state = {
+    "money": 100,
+    "bet": 10,
+    "deck": create_deck(),
+    "player_hand": [],
+    "dealer_hand": [],
+    "message": "",
+    "game_over": False
+}
+
+start_new_hand(state)
+
+buttons = {
+    "hit": BetButton(100, 620, 180, 50, "hit", blue),
+    "stand": BetButton(320, 620, 180, 50, "stand", red),
+    "new_hand": BetButton(700, 620, 220, 50, "new hand", gray)
+}
+
+def blackjack_main():
 
     running = True
-
+    
     while running:
+
+        max_bet = money
+
         clock.tick(60)
 
         for event in pygame.event.get():
@@ -220,22 +253,45 @@ def blackjack_main():
             if event.type == pygame.QUIT:
                 running = False
 
+            if event.type == pygame.KEYDOWN:
+
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+
+                    if event.key == pygame.K_UP:
+                        if bet < max_bet and bet < money:
+                            bet += 1
+
+                    if event.key == pygame.K_RIGHT:
+                        if bet + 10 <= money:
+                            bet += 10
+
+                    if event.key == pygame.K_LEFT:
+                        if bet - 10 >= min_bet:
+                            bet -= 10
+
+                    if event.key == pygame.K_DOWN:
+                        if bet - 1 >= min_bet:
+                            bet -= 1
             if event.type == pygame.MOUSEBUTTONDOWN:
+
                 pos = pygame.mouse.get_pos()
 
                 if buttons["hit"].clicked(pos) and not state["game_over"]:
+
                     hit(state["deck"], state["player_hand"])
 
                     if calculate_total(state["player_hand"]) > 21:
                         state["message"] = "you busted"
-                        state["money"] -= state["bet"]
                         state["game_over"] = True
 
                 elif buttons["stand"].clicked(pos) and not state["game_over"]:
+
                     dealer_turn(state)
 
-                elif buttons["restart"].clicked(pos):
-                    reset_game(state)
+                elif buttons["new_hand"].clicked(pos):
+
+                    start_new_hand(state)
 
         draw_game(state, buttons)
 
@@ -243,4 +299,5 @@ def blackjack_main():
 
     pygame.quit()
     sys.exit()
+
 blackjack_main()
