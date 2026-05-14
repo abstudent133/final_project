@@ -105,7 +105,7 @@ def draw(bg, grid, money, bet, message):
 
     collision_test.draw(screen)
 
-def slots_main(grid, message, money, bet, bg):
+def slots_main(grid, message, money, bet, bg, users, username):
 
     running = True
     clock = pygame.time.Clock()
@@ -171,7 +171,8 @@ def slots_main(grid, message, money, bet, bg):
                 bg = bg_non
 
         clock.tick(60)
-
+    users[username]["money"] = money
     pygame.quit()
+    return users
 
 slots_main(grid, message, money, bet, bg)

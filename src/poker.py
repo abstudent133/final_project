@@ -5,7 +5,7 @@ from itertools import combinations
 import sys
 
 
-def poker_main():
+def poker_main(users, username):
     pygame.init()
 
     width, height = 1200, 700
@@ -302,8 +302,9 @@ def poker_main():
         pygame.display.flip()
 
     money = players[0]["chips"]
-
+    users[username]["money"] = money
     pygame.quit()
+    return users
     sys.exit()
 
 

@@ -238,7 +238,7 @@ buttons = {
     "new_hand": BetButton(700, 620, 220, 50, "new hand", gray)
 }
 
-def blackjack_main():
+def blackjack_main(users, username):
 
     running = True
     
@@ -297,8 +297,9 @@ def blackjack_main():
         draw_game(state, buttons)
 
         pygame.display.flip()
-
+    users[username]["money"] = money
     pygame.quit()
+    return users
     sys.exit()
 
 blackjack_main()
