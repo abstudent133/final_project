@@ -6,99 +6,108 @@ from csv_management import *
 # display avatar:
 
 
-def overlay_images(screen, base_image, top_image, base_x, base_y,top_x, top_y):
-    #Get rectangles for positioning
+def overlay_images(screen, base_image, top_image, base_x, base_y, top_x, top_y):
+
+    # get rectangles
     base_rect = base_image.get_rect()
-    top_rect = top_image.get_rect()
-    
-    #Position the base image on the screen
     base_rect.topleft = (base_x, base_y)
-    
-    #Center the top image rectangle over the base image rectangle
-    top_rect.topleft = (top_x, top_y)
-    
-    #Draw both layers onto the display surface
+
+    # draw avatar/base image
     screen.blit(base_image, base_rect)
-    screen.blit(top_image, top_rect)
+
+    # only draw top image if it exists
+    if top_image != None:
+
+        top_rect = top_image.get_rect()
+        top_rect.topleft = (top_x, top_y)
+
+        screen.blit(top_image, top_rect)
 
 # display inventory:
-def display_inventory(user):
-    hats = user["Inventory"]
-    x = 100
-    y = 100
-    count = 1
-    window = pygame.display.set_mode((800, 600))
-    # displays all hats as buttons
-    # if a hat is not owned by the user put the lock sprite over it
-    # if they select a hat they own equip it
-    # if they select a hat they don't own ask them if they want to purchase it
-    # if they do run the purchase function
+def display_inventory():
+    hats_raw = load_df("docs/CSVs/hats.csv")
+    hats =[]
+    x_y = [[50,50],[50,100],[50,150],[50,200],[50,250],[150,50],[150,100],[150,150],[150,200],[150,250],[250,50],[250,100],[250,150],[250,200],[250,250]]
+    num = 0
+    for hat in hats_raw.keys():
+        button = (ImageButton(x_y[num][0],x_y[num][1],hats_raw[hat],scale=0.25),hat)
+        hats.append(button)
+        num += 1
+    return hats
 
-# display info:
-def display_info(user):
-    pass
-    # displays user name
-    # displays users money
 
-# display profile:
+
 def display_profile(user):
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
-    avatar = pygame.image.load("docs/characters/trex.png").convert_alpha() 
+    pygame.display.set_caption("User Profile")
+    clock = pygame.time.Clock()
+    avatar = pygame.image.load("docs/characters/trex.png").convert_alpha()
+    # hats csv/dictionary
+    hats = display_inventory()
+    # currently equipped hat
     equipped_item = None
-    hats = load_df("docs\CSVs\hats.csv")
+    hat_paths = load_df("docs/CSVs/hats.csv")
+    # find equipped item
     for item in user["inventory"].keys():
-        if user['inventory'][item] == "equipped":
-            equipped_item = pygame.image.load(hats[item]).convert_alpha()
-    user_name = Message(user["username"],200,150)
-    money = Message(user["money"],300,150)
+        if user["inventory"][item] == "equipped":
+            equipped_item = pygame.image.load(hat_paths[item]).convert_alpha()
+
     title = Message("User Profile",500,50,size=50)
+    username = Message(f"Name: {user['username']}",400,170)
+    money = Message(f"Money: ${user['money']}",400,230)
+    change_hat_button = Button(400,320, "docs/buttons/small_button.png", scale=0.25, text="Hats")
+
+    # popup/menu variable
+    show_hat_menu = False
     running = True
+
     while running:
-        screen.fill((0,0,0))
-        #if quit button clicked
+
+        screen.fill((30, 30, 30))
+
         for event in pygame.event.get():
+            # quit game
             if event.type == pygame.QUIT:
                 running = False
-            
+            # mouse click
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # toggle hat menu
+                if change_hat_button.is_clicked(event):
+                    show_hat_menu = not show_hat_menu
+                # click hat buttons
+                if show_hat_menu:
+                    for button in hats:
+                        buton, name = button
+                        if buton.is_clicked(event):
+                            # load selected hat
+                            equipped_item = pygame.image.load(hat_paths[name]).convert_alpha()
+                            # unequip old hat
+                            for item in user["inventory"]:
+                                if user["inventory"][item] == "equipped":
+                                    user["inventory"][item] = "not equipped"
+                            # equip new hat
+                            user["inventory"][name] = "equipped"
+                            # close popup
+                            show_hat_menu = False
+
         title.draw(screen)
-        user_name.draw(screen)
+        username.draw(screen)
         money.draw(screen)
-        overlay_images(screen,avatar,equipped_item,50,150,60,200)
+        change_hat_button.draw(screen)
+        overlay_images(screen,avatar,equipped_item,80, 150,100, 100)
+
+        if show_hat_menu:
+            pygame.draw.rect(
+                screen,
+                (60, 60, 60),(850, 130, 300, 450))
+            for button in hats:
+                buton, name = button
+                buton.draw(screen)
         pygame.display.flip()
-    pygame.quit
-        
+        clock.tick(60)
+    pygame.quit()
             
-
-            
-    # runs display avatar
-    # runs display inventory
-    # runs display info
-
-# load buttons
-def load_hats():
-    hats = {}
-    # creates a button for every hat
-    conductor = hats["conductor"]["file path"]
-    top = hats["top"]["file path"]
-    propeller = hats["propeller"]["file path"]
-    baseball = hats["baseball"]["file path"]
-    sombrero = hats["sombrero"]["file path"]
-    burger = hats["burger"]["file path"]
-    wizard = hats["wizard"]["file path"]
-    crown = hats["crown"]["file path"]
-    jester = hats["jester"]["file path"]
-    cowboy = hats["cowboy"]["file path"]
-    clown = hats["clown"]["file path"]
-    dunce = hats["dunce"]["file path"]
-    unicorn = hats["unicorn"]["file path"]
-    hotdog = hats["hotdog"]["file path"]
-    detective = hats["detective"]["file path"]
-
-# purchase, takes in the user dictionary:
-    # asks the user if they want to purchase the item
-    # if they do save it to their inventory and subtract it's price from their money total, then return the updated dictionary
-    # if they don't go back to the main shop
 user = {"username": "username",
         "avatar base": "docs/characters/trex.png",
         "money": 100,

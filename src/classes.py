@@ -108,25 +108,15 @@ class ImageButton:
         # Create a rect for positioning and collision detection
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
-        self.clicked = False
 #again this is what creates the button and it returns if it has been pressed or not
     def draw(self, screen):
-        action = False
-        # Get mouse position
-        pos = pygame.mouse.get_pos()
-
-        # Check for hover and click conditions
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                self.clicked = True
-                action = True
-
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-
         # Draw button on screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
-        return action
+    def is_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                return True
+        return False
     
 #message class
 class Message:
