@@ -174,5 +174,3 @@ def slots_main(grid, message, money, bet, bg, users, username):
     users[username]["money"] = money
     pygame.quit()
     return users
-
-slots_main(grid, message, money, bet, bg)

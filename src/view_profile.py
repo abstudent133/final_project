@@ -65,9 +65,3 @@ def display_profile(user):
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
-            
-user = {"username": "username",
-        "avatar base": "docs/characters/trex.png",
-        "money": 100,
-        "inventory": {"conductor hat": "equipped"}}
-display_profile(user)
