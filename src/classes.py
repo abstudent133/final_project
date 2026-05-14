@@ -50,7 +50,7 @@ class Button:
         self.rect = self.img.get_rect(topleft=(x, y))
         
         # Create text surface once in __init__ instead of every frame
-        self.font = pygame.font.SysFont("Impact", 30)
+        self.font = pygame.font.SysFont("Ariel", 30)
         self.text_surf = self.font.render(self.text, True, (255, 255, 255))
         
         # Center text surface directly over the button's screen rect
@@ -108,30 +108,20 @@ class ImageButton:
         # Create a rect for positioning and collision detection
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
-        self.clicked = False
 #again this is what creates the button and it returns if it has been pressed or not
     def draw(self, screen):
-        action = False
-        # Get mouse position
-        pos = pygame.mouse.get_pos()
-
-        # Check for hover and click conditions
-        if self.rect.collidepoint(pos):
-            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                self.clicked = True
-                action = True
-
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-
         # Draw button on screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
-        return action
+    def is_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                return True
+        return False
     
 #message class
 class Message:
     #initiates all the parameters which are the text, the x and y coordinates, the font(not necesary), the size(not necesary), and the color(not necesary)
-    def __init__(self, text,x,y,font="Ariel",size=30,color=(255,255,255)):
+    def __init__(self, text,x,y,font="Arial",size=30,color=(255,255,255)):
         self.txt = text
         self.font = font
         self.size = size
@@ -141,7 +131,7 @@ class Message:
 
     def draw(self, screen):
         font = pygame.font.SysFont(self.font,self.size)
-        text_surface = font.render(self.txt,True,self.color)
+        text_surface = font.render(str(self.txt),True,self.color)
         screen.blit(text_surface,(self.x,self.y))
 
 #class for text inputs

@@ -7,6 +7,7 @@ from classes import *
 from helper import *
 
 import pygame
+from csv_management import *
 
 
 #login function
@@ -74,9 +75,9 @@ def login(screen, users_dict, action):
 
                         #create dictionary entry
                         users_dict[username] = {"password":hash_pass("password"), "money": 100,"avatar_base": "docs\\trex.png","inventory":{}}
-
+                        save_df(users_dict,"docs\CSVs\users.csv")
                         #return good
-                        return users_dict
+                        return username
 
             #else if they choose login
             elif action == "1":
@@ -107,7 +108,7 @@ def login(screen, users_dict, action):
                             #if password matches
                             if hashed_password == dict_pass:
                                 #return good
-                                return "good"
+                                return username
 
                             #else show incorrect password
                             else:
@@ -172,7 +173,7 @@ def login_ui(user_dict):
             #else if they choose to sign up run login with action being 2
             if sign_up_button.is_clicked(event):
                 running = False
-                user_dict = login(screen, user_dict, "2")
+                username = login(screen, user_dict, "2")
 
             #else if they choose to exit run login with action being 3
             if exit_button.is_clicked(event):
@@ -189,7 +190,7 @@ def login_ui(user_dict):
         pygame.display.flip()
 
     pygame.quit()
-    return user_dict
+    return username
 # DICTIONARY STRUCTURE:
     # users = {
     # username = {
