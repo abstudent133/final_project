@@ -23,43 +23,25 @@ def overlay_images(screen, base_image, top_image, base_x, base_y, top_x, top_y):
 
         screen.blit(top_image, top_rect)
 
-# display inventory:
-def display_inventory():
-    hats_raw = load_df("docs/CSVs/hats.csv")
-    hats =[]
-    x_y = [[50,50],[50,100],[50,150],[50,200],[50,250],[150,50],[150,100],[150,150],[150,200],[150,250],[250,50],[250,100],[250,150],[250,200],[250,250]]
-    num = 0
-    for hat in hats_raw.keys():
-        button = (ImageButton(x_y[num][0],x_y[num][1],hats_raw[hat],scale=0.25),hat)
-        hats.append(button)
-        num += 1
-    return hats
+
 
 
 
 def display_profile(user):
     pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((2000,1100))
     pygame.display.set_caption("User Profile")
     clock = pygame.time.Clock()
     avatar = pygame.image.load("docs/characters/trex.png").convert_alpha()
-    # hats csv/dictionary
-    hats = display_inventory()
-    # currently equipped hat
-    equipped_item = None
-    hat_paths = load_df("docs/CSVs/hats.csv")
-    # find equipped item
-    for item in user["inventory"].keys():
-        if user["inventory"][item] == "equipped":
-            equipped_item = pygame.image.load(hat_paths[item]).convert_alpha()
+ 
 
-    title = Message("User Profile",500,50,size=50)
-    username = Message(f"Name: {user['username']}",400,170)
-    money = Message(f"Money: ${user['money']}",400,230)
-    change_hat_button = Button(400,320, "docs/buttons/small_button.png", scale=0.25, text="Hats")
-
+    title = Message("User Profile",500,50,size=100)
+    username = Message(f"Name: {user['username']}",1000,170)
+    money = Message(f"Money: ${user['money']}",1000,230)
+    exit = Button(1800,1000,"docs/buttons/small_button.png",scale=0.25,text="Exit")
+   
+    
     # popup/menu variable
-    show_hat_menu = False
     running = True
 
     while running:
@@ -71,39 +53,15 @@ def display_profile(user):
             if event.type == pygame.QUIT:
                 running = False
             # mouse click
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                # toggle hat menu
-                if change_hat_button.is_clicked(event):
-                    show_hat_menu = not show_hat_menu
-                # click hat buttons
-                if show_hat_menu:
-                    for button in hats:
-                        buton, name = button
-                        if buton.is_clicked(event):
-                            # load selected hat
-                            equipped_item = pygame.image.load(hat_paths[name]).convert_alpha()
-                            # unequip old hat
-                            for item in user["inventory"]:
-                                if user["inventory"][item] == "equipped":
-                                    user["inventory"][item] = "not equipped"
-                            # equip new hat
-                            user["inventory"][name] = "equipped"
-                            # close popup
-                            show_hat_menu = False
+            if exit.is_clicked(event):
+                running = False
+                
 
         title.draw(screen)
         username.draw(screen)
         money.draw(screen)
-        change_hat_button.draw(screen)
-        overlay_images(screen,avatar,equipped_item,80, 150,100, 100)
-
-        if show_hat_menu:
-            pygame.draw.rect(
-                screen,
-                (60, 60, 60),(850, 130, 300, 450))
-            for button in hats:
-                buton, name = button
-                buton.draw(screen)
+        exit.draw(screen)
+        screen.blit(avatar,(0,0))
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
@@ -111,5 +69,5 @@ def display_profile(user):
 user = {"username": "username",
         "avatar base": "docs/characters/trex.png",
         "money": 100,
-        "inventory": {"conductor": "equipped"}}
+        "inventory": {"conductor hat": "equipped"}}
 display_profile(user)

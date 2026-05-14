@@ -38,5 +38,3 @@ def load_df(file_path):
     #}
 #}
 
-
-print(load_df('docs/testtts.csv'))
