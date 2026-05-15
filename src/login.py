@@ -21,7 +21,6 @@ def login(screen, users_dict, action):
         #return true if username exists
         return searching in user_dict.keys()
 
-    pygame.init()
 
     #create messages
     
@@ -72,9 +71,9 @@ def login(screen, users_dict, action):
                 #if enter key pressed
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-
+                        
                         #create dictionary entry
-                        users_dict[username] = {"password":hash_pass("password"), "money": 100,"avatar_base": "docs/characters/trex.png","inventory":{}}
+                        users_dict[username] = {"password":hash_pass(password), "money": 100,"avatar_base": "docs/characters/trex.png","inventory":{}}
                         save_df(users_dict,"docs/CSVs/users.csv")
                         #return good
                         return username
@@ -92,7 +91,8 @@ def login(screen, users_dict, action):
                 #if enter key pressed
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-
+                        show_wrong_pass = False
+                        show_wrong_user = False
                         #call search
                         output = search(users_dict, username)
 
@@ -142,7 +142,7 @@ def login(screen, users_dict, action):
 #login interface
 def login_ui(user_dict):
 #parameters: none
-
+    username = None
     #set up space
     pygame.init()
     title = Message("This is the login for the DINO CASINO!",300,500)
@@ -167,20 +167,19 @@ def login_ui(user_dict):
 
             #if login was clicked run login and with action being 1
             if login_button.is_clicked(event):
+                username = login(screen, user_dict, "1")
                 running = False
-                login(screen, user_dict, "1")
 
             #else if they choose to sign up run login with action being 2
             if sign_up_button.is_clicked(event):
-                running = False
                 username = login(screen, user_dict, "2")
+                running = False
 
             #else if they choose to exit run login with action being 3
             if exit_button.is_clicked(event):
+                username = login(screen, user_dict, "3")
                 running = False
-                login(screen, user_dict, "3")
         title.draw(screen)
-        screen.fill((0,0,0))
         #draw all of the buttons
         login_button.draw(screen)
         sign_up_button.draw(screen)
