@@ -172,5 +172,4 @@ def slots_main(grid, message, money, bet, bg, users, username):
 
         clock.tick(60)
     users[username]["money"] = money
-    pygame.quit()
     return users

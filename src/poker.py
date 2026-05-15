@@ -303,7 +303,5 @@ def poker_main(users, username):
 
     money = players[0]["chips"]
     users[username]["money"] = money
-    pygame.quit()
-    sys.exit()
     return users
     

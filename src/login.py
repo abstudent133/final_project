@@ -188,8 +188,6 @@ def login_ui(user_dict):
 
         #show it on the screen
         pygame.display.flip()
-
-    pygame.quit()
     return username
 # DICTIONARY STRUCTURE:
     # users = {
