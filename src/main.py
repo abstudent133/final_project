@@ -5,7 +5,6 @@ from login import *
 from poker import *
 from slots import *
 from view_profile import *
-from work import *
 from classes import *
 
 # ...existing code...
@@ -17,10 +16,10 @@ def main():
     pygame.display.set_caption("User Profile")
     clock = pygame.time.Clock()
     title = Message("Dino Casino",500,50,size=100)
-    poker = Button(1000,100,"docs/buttons/small_button.png",scale=0.25,text="Poker")
-    profile = Button(1000,200,"docs/buttons/mid_button.png",scale=0.25,text="Profile")
-    blackjack = Button(1000,300,"docs/buttons/large_button.png",scale=0.25,text="Blackjack")
-    slots = Button(1000,400,"docs/buttons/small_button.png",scale=0.25,text="Slots")
+    poker = Button(500,200,"docs/buttons/small_button.png",scale=0.25,text="Poker")
+    profile = Button(500,300,"docs/buttons/mid_button.png",scale=0.25,text="Profile")
+    blackjack = Button(500,400,"docs/buttons/large_button.png",scale=0.25,text="Blackjack")
+    slots = Button(500,500,"docs/buttons/small_button.png",scale=0.25,text="Slots")
     exit = Button(1000,500,"docs/buttons/small_button.png",scale=0.25,text="Exit")
 
     running = True
@@ -72,6 +71,7 @@ def main():
         blackjack.draw(screen)
         slots.draw(screen)
         exit.draw(screen)
+        profile.draw(screen)
         pygame.display.flip()
         clock.tick(60)
 
