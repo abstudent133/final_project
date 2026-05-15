@@ -64,4 +64,4 @@ def display_profile(user):
         screen.blit(avatar,(0,0))
         pygame.display.flip()
         clock.tick(60)
-    pygame.quit()
+    
